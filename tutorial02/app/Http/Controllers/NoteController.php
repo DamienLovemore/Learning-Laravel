@@ -17,7 +17,7 @@ class NoteController extends Controller
     {
         $notes = Note::latest()->paginate(5);
 
-        return view("notes.index", compact("notes"))->with("maxNotes", (request()->input("page", 1) * 5));
+        return view("notes.index", compact("notes"))->with("cont", (request()->input("page", 1) - 1) * 5);
     }
 
     /**

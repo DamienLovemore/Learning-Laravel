@@ -10,7 +10,7 @@ class Note extends Model
 
     use HasFactory;
 
-    protected $fillabe = [
+    protected $fillable = [
         "title",
         "content"
     ];

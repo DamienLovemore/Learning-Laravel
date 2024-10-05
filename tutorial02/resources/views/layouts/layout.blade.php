@@ -19,13 +19,13 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
         <style type="text/tailwindcss">
-            @yield("style");
+            @yield("style")
         </style>
     </head>
 
     <body>
         <div class="container">
-            @yield("content");
+            @yield("content")
         </div>
     </body>
 </html>
