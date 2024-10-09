@@ -5,7 +5,7 @@
     <header class="py-5 bg-light border-bottom mb-4">
         <div class="container">
             <div class="text-center my-5">
-                <h1 class="fw-bolder">Contact us</h1>
+                <h1 class="fw-bolder">Entre em contato</h1>
             </div>
         </div>
     </header>
@@ -15,7 +15,7 @@
         <div class="row">
             <!-- Blog entries-->
             <div class="col-lg-12">
-                <p class="lead mb-0">Contact us text</p>
+                <p class="lead mb-0">Manda uma mensagem pra gente :)</p>
             </div>
         </div>
     </div>
