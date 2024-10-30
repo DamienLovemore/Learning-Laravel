@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category Edit') }}
+            {{ __("Edit Post") }}
         </h2>
     </x-slot>
 
@@ -19,16 +19,36 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('categories.update', $category) }}">
+                    <form method="POST" action="{{ route('posts.update', $post) }}">
                         @csrf
                         @method('PUT')
 
                         <div>
                             <div>
-                                <label for="name">{{ __('Name') }}:</label>
+                                <label for="title">{{ __("Title") }}:</label>
                             </div>
 
-                            <input type="text" name="name" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" id="name" value="{{ $category->name }}">
+                            <input type="text" name="title" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" id="title" value="{{ $post->title }}">
+                        </div>
+
+                        <div>
+                            <div>
+                                <label for="text">{{ __("Text") }}:</label>
+                            </div>
+
+                            <textarea type="text" name="text" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" id="text"> {{ $post->text }}</textarea>
+                        </div>
+
+                        <div>
+                            <div>
+                                <label for="category_id">{{ __("Category") }}:</label>
+                            </div>
+
+                            <select name="category_id" id="category_id" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected($category->id == $post->category_id)>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div>

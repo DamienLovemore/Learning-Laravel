@@ -31,6 +31,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        //Direct validation in controller
+        $request->validate([
+            "name" => ["required", "string", "min:5", "max:30"]
+        ]);
+
         Category::create([
             "name" => $request->input("name")
         ]);
@@ -59,6 +64,10 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $request->validate([
+            "name" => ["required", "string", "min:5", "max:30"]
+        ]);
+
         $category->update([
             "name" => $request->input("name")
         ]);

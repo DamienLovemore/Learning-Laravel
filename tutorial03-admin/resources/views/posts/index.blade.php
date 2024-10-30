@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Categories') }}
+            {{ __("Posts") }}
         </h2>
     </x-slot>
 
@@ -9,22 +9,24 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <a href="{{ route("categories.create") }}">{{ __("Add new category") }}</a>
+                    <a href="{{ route("posts.create") }}">{{ __("Add new post") }}</a>
 
                     <table>
                         <thead>
-                            <th>{{ __("Name") }}</th>
+                            <th>{{ __("Title") }}</th>
+                            <th>{{ __("Category") }}</th>
                             <th></th>
                         </thead>
 
                         <tbody>
-                            @foreach ($categories as $category)
+                            @foreach ($posts as $post)
                                 <tr>
-                                    <td>{{ $category->name }}</td>
+                                    <td>{{ $post->title }}</td>
+                                    <td class="px-4">{{ $post->category->name }}</td>
 
                                     <td class="px-4">
-                                        <a href="{{ route('categories.edit', $category) }}">{{__("Edit")}}</a>
-                                        <form method="POST" action="{{ route("categories.destroy", $category) }}">
+                                        <a href="{{ route('posts.edit', $post) }}">{{__("Edit")}}</a>
+                                        <form method="POST" action="{{ route("posts.destroy", $post) }}">
                                             @csrf
                                             @method("DELETE")
 
