@@ -9,6 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <a href="{{ route("categories.create") }}">{{ __("Add new category") }}</a>
+
                     <table>
                         <thead>
                             <th>Name</th>
@@ -19,7 +21,16 @@
                             @foreach ($categories as $category)
                                 <tr>
                                     <td>{{ $category->name }}</td>
-                                    <td><a href="{{ route('categories.edit', $category) }}">{{__("Edit")}}</a></td>
+
+                                    <td class="px-4">
+                                        <a href="{{ route('categories.edit', $category) }}">{{__("Edit")}}</a>
+                                        <form method="POST" action="{{ route("categories.destroy", $category) }}">
+                                            @csrf
+                                            @method("DELETE")
+
+                                            <button type="submit" onclick="return confirm({{ __('Are you sure?') }})">{{ __("Delete") }}</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
