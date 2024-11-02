@@ -13,7 +13,10 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $notes = Note::query()->orderBy("created_at", "desc")->get();
+        dd($notes);//Prints the value and dies there - default with laravel
+
+        return view("note.index");
     }
 
     /**
@@ -21,7 +24,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        return view("note.create");
     }
 
     /**
@@ -37,7 +40,7 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        return "show";
+        return view("note.show");
     }
 
     /**
@@ -45,7 +48,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        //
+        return view("note.edit");
     }
 
     /**
