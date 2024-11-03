@@ -1,10 +1,15 @@
-<x-layout>
+<x-app-layout>
     <div class="note-container single-note">
         <div class="note-header">
-            <h1>Note: {{ $note->created_at }}</h1>
+            <h1 class="text-3xl py-4">Note: {{ $note->created_at }}</h1>
             <div class="note-buttons">
                 <a href={{ route("note.edit", $note) }} class="note-edit-button">Edit</a>
-                <button class="note-delete-button">Delete</button>
+                <form action="{{ route("note.destroy", $note) }}" method="POST">
+                    @csrf
+                    @method("DELETE")
+
+                    <button class="note-delete-button">{{ __("Delete") }}</button>
+                </form>
             </div>
         </div>
         <div class="note">
@@ -13,4 +18,4 @@
             </div>
         </div>
     </div>
-</x-layout>
+</x-app-layout>
