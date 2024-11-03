@@ -13,10 +13,10 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = Note::query()->orderBy("created_at", "desc")->get();
-        dd($notes);//Prints the value and dies there - default with laravel
+        $notes = Note::query()->orderBy("created_at", "desc")->paginate();
+        //dd($notes);//Prints the value and dies there - default with laravel
 
-        return view("note.index");
+        return view("note.index", ["notes" => $notes]);
     }
 
     /**
@@ -32,7 +32,16 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "note" => ["required", "string"]
+        ]);
+        //$data = $request->except("_token"); //Outro jeito de pega o valor (sem validar)
+
+        $data["user_id"] = 1;
+        $note = Note::create($data);
+
+
+        return redirect()->route("note.show", $note)->with("message", "Note was created");
     }
 
     /**
@@ -40,7 +49,7 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        return view("note.show");
+        return view("note.show", ["note" => $note]);
     }
 
     /**
@@ -48,7 +57,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        return view("note.edit");
+        return view("note.edit", ["note" => $note]);
     }
 
     /**
@@ -56,7 +65,13 @@ class NoteController extends Controller
      */
     public function update(Request $request, Note $note)
     {
-        //
+        $data = $request->validate([
+            "note" => ["required", "string"]
+        ]);
+
+        $note->update($data);
+
+        return redirect()->route("note.show", $note)->with("message", "Note was updated");
     }
 
     /**
