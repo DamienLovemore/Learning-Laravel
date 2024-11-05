@@ -2,34 +2,36 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PostController;
 
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
 
-Route::post("/", function(Request $request){
-    dd($request->all());
-});
+Route::view("/", "welcome");//If you do not need additional logic, you can just use view
 
-Route::put("/{id}", function(Request $request, $id){
-    //dd($request->all());
+//Post - Routes
+/*
+Route::get("/posts", [PostController::class, "index"]);
+Route::get("/posts/create", [PostController::class, "create"]);
+Route::post("/posts", [PostController::class, "store"]);
+Route::get("/posts/{id}", [PostController::class, "show"]);
+Route::get("/posts/{id}/edit", [PostController::class, "edit"]);
+Route::put("/posts/{id}", [PostController::class, "update"]);
+Route::delete("/posts/{id}", [PostController::class, "destroy"]);
+*/
+Route::resource("/posts", PostController::class);
 
-    return $id;
-});
-
-Route::delete("/{id}", function($id){
-    //dd($request->all());
-
-    //delete post based on the id
-    return $id;
-});
-
+/*
 Route::get("/test", function (){
     $body = "";
     $body .= "<h1>" . __('Test') . "</h1>";
 
     return $body;
 });
+*/
 
 Route::get("clear", function(){
     //Limpa tudo
@@ -41,7 +43,7 @@ Route::get("clear", function(){
     Artisan::call("clear-compiled");
 
     //Forca refazer otimizacoes
-    //Artisan::call("optimize");
+    Artisan::call("optimize");
 
     return __("Laravel cache cleared succesfully!");
 });
