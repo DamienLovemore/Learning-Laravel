@@ -13,7 +13,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        //get all posts from database
+        $username = "Alfredo";
+        $age = 32;
+        $posts = [
+            "Post 1",
+            "Post 2",
+            "Post 3"
+        ];
+
+        return view("posts.index", compact("username", "age", "posts"));
     }
 
     /**
