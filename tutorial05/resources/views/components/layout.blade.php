@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html class="dark" lang="{{ str_replace("_", "-", app()->getLocale()) }}">
+@php
+    $sessionLang = str_replace("_", "-", session("language", ""));
+    $language = (mb_strlen($sessionLang) > 0) ? $sessionLang : str_replace("_", "-", app()->getLocale());
+@endphp
+<html class="dark" lang="{{ $language }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +15,12 @@
         @vite(["resources/css/app.css", "resources/js/app.js"])
         <script async>
             const assetFolder = "{{ asset('/') }}";
+            const defaultLanguage = "{{ $language }}";
         </script>
         <script src="{{ asset("js/layout.js") }}" defer></script>
     </head>
 
-    <body class="bg-white dark:bg-gray-900 text-black dark:text-white ">
+    <body class="bg-white dark:bg-gray-900 text-black dark:text-white">
        <x-navbar />
 
         <div class="max-w-7xl mx-auto">

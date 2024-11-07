@@ -33,6 +33,12 @@ Route::get("/test", function (){
 });
 */
 
+//Muda a lingua do aplicativo e volta para a página da onde veio
+Route::get("set-language/{language}", function(string $language){
+    session()->put("language", $language);
+    return redirect()->back();
+});
+
 Route::get("clear", function(){
     //Limpa tudo
     Artisan::call("cache:clear");
@@ -45,6 +51,6 @@ Route::get("clear", function(){
     //Forca refazer otimizacoes
     Artisan::call("optimize");
 
-    return __("Laravel cache cleared succesfully!");
+    return view("clearcaches");
 });
 
