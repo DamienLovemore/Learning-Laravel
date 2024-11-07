@@ -21,7 +21,7 @@
                 <x-navbar-link href="posts" :active="request()->is('posts')">Posts</x-navbar-link><!-- website/posts -->
 
                 <div class="!ml-12 !pl-12 w-auto relative bottom-4 left-11" onclick="togglePageTheme()">
-                    <img src="{{ asset("images/dark-mode-toggle-icon.png") }}" id="toggle-DarkMode" class="w-auto h-auto">
+                    <img id="toggle-DarkMode" class="w-auto h-auto">
                 </div>
             </ul>
         </div>

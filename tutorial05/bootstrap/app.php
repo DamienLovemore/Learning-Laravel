@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\LanguageSet;
+use App\Http\Middleware\SessionPersist;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,13 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(StartSession::class);
-        $middleware->append(LanguageSet::class); //Make a middleware run through every request
-        /*
         $middleware->alias([ //Register alias so you do not need to import every time, just call name on the middleware
+            "sessionpersist" => SessionPersist::class,
             "languageset" => LanguageSet::class
         ]);
-        */
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

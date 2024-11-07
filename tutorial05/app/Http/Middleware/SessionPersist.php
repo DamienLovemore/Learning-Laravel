@@ -3,11 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\App;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class LanguageSet
+class SessionPersist
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,8 @@ class LanguageSet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //dd(session("language"));
-        $locale = str_replace("-", "_", session("language", "pt_BR"));
-
-        App::setLocale($locale);
+        //dd("Aqui 1");
+        session_start();
 
         return $next($request);
     }

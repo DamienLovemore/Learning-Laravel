@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", loadDefaults);
 
 function loadDefaults()
 {
+    if (localStorage.theme === null)
+        localStorage.theme = "dark";
+
+    loadThemeImage();
     loadLanguageImage();
 }
 
@@ -36,22 +40,36 @@ function togglePageLanguage()
     location.href = assetFolder + `set-language/${localStorage.language}`;
 }
 
+function loadThemeImage()
+{
+    var imageThemeToggle = document.getElementById("toggle-DarkMode");
+
+    if (localStorage.theme === "dark")
+    {
+        imageThemeToggle.src = assetFolder + "images/dark-mode-toggle-icon.png";
+        document.documentElement.classList.add("dark");
+    }
+    else
+    {
+        imageThemeToggle.src = assetFolder + "images/light-mode-toggle-icon.png";
+        document.documentElement.classList.remove("dark");
+    }
+}
+
 function togglePageTheme()
 {
-    const imageThemeToggle = document.getElementById("toggle-DarkMode");
-    var actualTheme = localStorage.theme ?? "dark";
+    var imageThemeToggle = document.getElementById("toggle-DarkMode");
 
-    if (actualTheme === "dark")
+    if (localStorage.theme === "dark")
     {
         imageThemeToggle.src = assetFolder + "images/light-mode-toggle-icon.png";
         localStorage.theme = "light";
+        document.documentElement.classList.remove("dark");
     }
     else
     {
         imageThemeToggle.src = assetFolder + "images/dark-mode-toggle-icon.png";
         localStorage.theme = "dark";
+        document.documentElement.classList.add("dark");
     }
-
-    //Adds or removes the dark class from the body
-    document.documentElement.classList.toggle("dark");
 }
