@@ -16,11 +16,11 @@
         </button>
 
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul class="font-medium flex flex-column p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul class="font-medium flex flex-column p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-slate-300 dark:bg-gray-800 md:dark:bg-gray-700 dark:border-gray-700">
                 <x-navbar-link href="/" :active="request()->is('/')">Home</x-navbar-link><!-- website -->
-                <x-navbar-link href="posts" :active="request()->is('posts')">Posts</x-navbar-link><!-- website/posts -->
+                <x-navbar-link href="/posts" :active="request()->is('posts')">Posts</x-navbar-link><!-- website/posts -->
 
-                <div class="!ml-12 !pl-12 w-auto relative bottom-4 left-11" onclick="togglePageTheme()">
+                <div class="!ml-12 !pl-12 w-auto relative bottom-4" onclick="togglePageTheme()">
                     <img id="toggle-DarkMode" class="w-auto h-auto">
                 </div>
             </ul>

@@ -16,7 +16,6 @@ class LanguageSet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //dd(session("language"));
         $locale = str_replace("-", "_", session("language", "pt_BR"));
 
         App::setLocale($locale);

@@ -20,11 +20,8 @@
         <script src="{{ asset("js/layout.js") }}" defer></script>
     </head>
 
-    <body class="bg-white dark:bg-gray-900 text-black dark:text-white">
+    <body class="bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
        <x-navbar />
-       @php
-           echo session("language");
-       @endphp
 
         <div class="max-w-7xl mx-auto">
             {{ $pageContent }}

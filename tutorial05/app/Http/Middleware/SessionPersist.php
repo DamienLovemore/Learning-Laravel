@@ -15,7 +15,6 @@ class SessionPersist
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //dd("Aqui 1");
         session_start();
 
         return $next($request);
