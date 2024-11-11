@@ -159,6 +159,8 @@
   "Two Factor Authentication": "Autenticação de dois fatores",
   "Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application.": "A autenticação de dois fatores agora está habilitada. Digitalize o seguinte código QR usando o aplicativo autenticador do seu telefone.",
   "Type your message here": "Digite a sua mensagem aqui",
+  "Type the title of the post (no special characters)": "Digite o título da postagem (sem caracteres especiais)",
+  "Type the content of the post (no special characters)": "Digite o conteúdo da postagem (sem caracteres especiais)",
   "Unauthorized" : "Não autorizado",
   "Update Password": "Atualizar a senha",
   "Update your account profile information and email address.": "Atualize as informações do perfil e o endereço de e-mail da sua conta.",

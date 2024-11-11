@@ -38,7 +38,36 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $signalMessages = [
+            "status" => "",
+            "message" => ""
+        ];
+
+        //Verify is the request and post parameters are being passed right.
+        //dd($request);
+        //dd($request->all());
+        if ($request->filled("title") && $request->filled("content"))
+        {
+            $validated = $request->validate([
+                "title" => "required|string|alpha_dash|min:3|max:50|unique:posts",
+                "content" => "required|string|alpha_dash|min:10"
+            ]);
+
+            Post::create([
+                "title" => $validated["title"],
+                "content" => $validated["content"]
+            ]);
+
+            $signalMessages["status"] = "SUCCESS";
+            $signalMessages["message"] = "Post created succesfully!";
+            return redirect()->route("posts.index")->with($signalMessages);
+        }
+        else
+        {
+            $signalMessages["status"] = "ERROR";
+            $signalMessages["message"] = "All the required parameters should be passed in the request!";
+            return back()->with($signalMessages);
+        }
     }
 
     /**
