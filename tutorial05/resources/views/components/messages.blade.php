@@ -1,23 +1,35 @@
-@if(session()->has("status") && session()->has("message"))
-    @php
-        $defaultClasses = "p-4 mb-4 text-sm rounded-lg dark:bg-gray-800";
-        $additionalClasses = "";
-    @endphp
+@php
+    $defaultClasses = "p-4 mb-4 text-sm rounded-lg dark:bg-gray-800";
+    $additionalClasses = "";
+    $statusMessage = session()->get("status");
+@endphp
 
-    @if
+<div class="mb-2">
+    @if(session()->has("status") && session()->has("message"))
+        @if($statusMessage === "SUCCESS")
+            @php $additionalClasses = "text-green-800 bg-green-50 dark:text-green-400"; @endphp
+        @elseif ($statusMessage === "ERROR")
+            @php $additionalClasses = "text-red-800 bg-red-50 dark:text-red-400"; @endphp
+        @elseif ($statusMessage === "WARNING")
+            @php $additionalClasses = "text-yellow-800 bg-yellow-50 dark:text-yellow-300"; @endphp
+        @else
+            @php $additionalClasses = "text-gray-800 bg-gray-50 dark:text-gray-300";  @endphp
+        @endif
 
-  <div class=" mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-    <span class="font-medium">Danger alert!</span> Change a few things up and try submitting again.
-  </div>
-  <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-    <span class="font-medium">Success alert!</span> Change a few things up and try submitting again.
-  </div>
-  <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
-    <span class="font-medium">Warning alert!</span> Change a few things up and try submitting again.
-  </div>
-  <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300" role="alert">
-    <span class="font-medium">Dark alert!</span> Change a few things up and try submitting again.
-  </div>
-@elseif ()
+        <div class="{{ $defaultClasses . $additionalClasses }}">
+            <span class="font-medium">{{ __($statusMessage) }}</span> {{ __(session()->get("message")) }}
+        </div>
+    @elseif ($errors->any())
+        @php $additionalClasses = "text-red-800 bg-red-50 dark:text-red-400"; @endphp
 
-@endif
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>
+                    <div class="{{ $defaultClasses . ' ' . $additionalClasses }}">
+                        {{ __($error) }}
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    @endif
+</div>

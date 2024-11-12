@@ -49,14 +49,11 @@ class PostController extends Controller
         if ($request->filled("title") && $request->filled("content"))
         {
             $validated = $request->validate([
-                "title" => "required|string|alpha_dash|min:3|max:50|unique:posts",
-                "content" => "required|string|alpha_dash|min:10"
+                "title" => "required|string|min:3|max:30|unique:posts|regex:/^[a-zA-Z0-9\s\-]+$/",
+                "content" => "required|string|min:10|regex:/^[a-zA-Z0-9\s\-\.\;\,\!\:\?]+$/"
             ]);
 
-            Post::create([
-                "title" => $validated["title"],
-                "content" => $validated["content"]
-            ]);
+            Post::create($validated);
 
             $signalMessages["status"] = "SUCCESS";
             $signalMessages["message"] = "Post created succesfully!";
