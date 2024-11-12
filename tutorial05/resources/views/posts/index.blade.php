@@ -5,21 +5,38 @@
 
         <div class="m-4 p-6 bg-slate-300 dark:bg-slate-800">
             <section>
-                <div class="flex justify-end">
-                    <a href="/posts/create" class="text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">{{ __("Create") }}</a>
+                <div class="flex justify-end mb-2">
+                    <a href="{{ route('posts.create') }}" class="text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">{{ __("Create") }}</a>
                 </div>
             </section>
 
-            <div>
-                {{ __("My name is") . " " . $username . " " . __("and my age is") . " " . $age }}
-            </div>
-            <ul>
-            @foreach ($posts as $post)
-                <li>{{ __(Str::substr($post, 0, Str::length($post) - 2)) . " " . explode(" ", $post)[1] }}</li>
-            @endforeach
-            </ul><br>
+            <!--
+                <div>
+                    /*__("My name is") . " " . $username . " " . __("and my age is") . " " . $age*/
+                </div>
+            -->
+            <section>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ml-8 gap-6">
+                    @foreach ($posts as $post)
+                        <div class="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow" style="max-width: 23rem;">
+                            <a href="{{ route("posts.show", $post->id) }}">
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->title }}</h5>
+                            </a>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ Str::words($post->content, 35, '...') }}</p>
+                            <a href="{{ route("posts.show", $post->id) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 dark:bg-blue-600 rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                                {{ __("Read more") }}
+                                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                </svg>
+                            </a>
+                        </div>
+                    @endforeach
+                </div><br>
+            </section>
 
-            {{ __("Today's Date")}}: {{ date("d-m-Y") }}
+            <footer>
+                {{ __("Today's Date")}}: {{ date("Y-m-d") }}
+            </footer>
         </div>
     </x-slot>
 </x-layout>

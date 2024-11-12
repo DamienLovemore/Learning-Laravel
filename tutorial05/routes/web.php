@@ -18,7 +18,7 @@ Route::group(["middleware" => "sessionpersist"], function(){
     });
 
     Route::group(["middleware" => "languageset"], function(){
-        Route::view("/", "welcome");//If you do not need additional logic, you can just use view
+        Route::view("/", "welcome")->name("home");//If you do not need additional logic, you can just use view
 
         Route::resource("/posts", PostController::class);
 
@@ -35,7 +35,7 @@ Route::group(["middleware" => "sessionpersist"], function(){
             Artisan::call("optimize");
 
             return view("clearcaches");
-        });
+        })->name("clearlaravel");
     });
 });
 

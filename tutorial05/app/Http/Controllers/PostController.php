@@ -8,21 +8,16 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    private const textRegex = "/^[a-zA-Z0-9\s\-\.\;\,\!\:\?\"\“\”\'\(\)wáéíóúâêîôûãõçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]+$/";
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //get all posts from database
-        $username = "Alfredo";
-        $age = 32;
-        $posts = [
-            "Post 1",
-            "Post 2",
-            "Post 3"
-        ];
+        $posts = Post::all();
 
-        return view("posts.index", compact("username", "age", "posts"));
+        return view("posts.index", ["posts" => $posts]);
     }
 
     /**
@@ -49,8 +44,8 @@ class PostController extends Controller
         if ($request->filled("title") && $request->filled("content"))
         {
             $validated = $request->validate([
-                "title" => "required|string|min:3|max:30|unique:posts|regex:/^[a-zA-Z0-9\s\-]+$/",
-                "content" => "required|string|min:10|regex:/^[a-zA-Z0-9\s\-\.\;\,\!\:\?]+$/"
+                "title" => "required|string|min:3|max:30|unique:posts|regex:".$this::textRegex,
+                "content" => "required|string|min:10|regex:".$this::textRegex
             ]);
 
             Post::create($validated);
@@ -70,17 +65,19 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Post $post)
     {
-        return view("posts.show");
+        //$post = Post::findOrFail($id);//If not found, throw a 404 exception
+
+        return view("posts.show", ["post" => $post]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Post $post)
     {
-        return view("posts.edit");
+        return view("posts.edit", ["post" => $post]);
     }
 
     /**
@@ -88,7 +85,33 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $signalMessages = [
+            "status" => "",
+            "message" => ""
+        ];
+
+        //Verify is the request and post parameters are being passed right.
+        //dd($request);
+        //dd($request->all());
+        if ($request->filled("title") && $request->filled("content"))
+        {
+            $validated = $request->validate([
+                "title" => "required|string|min:3|max:30|regex:".$this::textRegex,
+                "content" => "required|string|min:10|regex:".$this::textRegex
+            ]);
+
+            $post->update($validated);
+
+            $signalMessages["status"] = "SUCCESS";
+            $signalMessages["message"] = "Post edited succesfully!";
+            return redirect()->route("posts.show", $post)->with($signalMessages);
+        }
+        else
+        {
+            $signalMessages["status"] = "ERROR";
+            $signalMessages["message"] = "All the required parameters should be passed in the request!";
+            return back()->with($signalMessages);
+        }
     }
 
     /**
