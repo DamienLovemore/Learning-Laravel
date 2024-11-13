@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PostController;
@@ -18,10 +20,21 @@ Route::group(["middleware" => "sessionpersist"], function(){
     });
 
     Route::group(["middleware" => "languageset"], function(){
+        //Home Page
         Route::view("/", "welcome")->name("home");//If you do not need additional logic, you can just use view
 
+        //Posts Handler
         Route::resource("/posts", PostController::class);
 
+        //Users Regist Handler
+        Route::get("/register", [RegisterUserController::class, "register"])->name("register");
+        Route::post("/register", [RegisterUserController::class, "store"])->name("register.store");
+
+        //Users Login Handler
+        Route::get("/login", [LoginUserController::class, "login"])->name("login");
+        Route::post("/login", [LoginUserController::class, "store"])->name("login.store");
+
+        //Others
         Route::get("/clear", function(){
             //Limpa tudo
             Artisan::call("cache:clear");

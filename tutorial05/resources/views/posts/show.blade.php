@@ -6,13 +6,8 @@
                 <div class="flex justify-between">
                     <a href="{{ route('posts.edit', $post) }}" class="text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">{{ __("Edit") }}</a>
                     <div>
-                        <button class="text-white bg-red-700 dark:bg-red-600 hover:bg-red-800 dark:hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" data-modal-target="delete-modal" data-modal-toggle="delete-modal">{{ __("Delete") }}</a>
-                        <form action="{{ route('posts.destroy', $post) }}" method="POST">
-                            @csrf
-                            @method("DELETE")
-
-
-                        </form>
+                        <button class="text-white bg-red-700 dark:bg-red-600 hover:bg-red-800 dark:hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none" data-modal-target="delete-modal" data-modal-toggle="delete-modal">{{ __("Delete") }}</button>
+                        <x-delete-modal :post="$post->id" />
                     </div>
                 </div>
             </div>
