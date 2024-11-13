@@ -48,18 +48,28 @@ class PostController extends Controller
                 "content" => "required|string|min:10|regex:".$this::textRegex
             ]);
 
-            Post::create($validated);
+            try
+            {
+                Post::create($validated);
 
-            $signalMessages["status"] = "SUCCESS";
-            $signalMessages["message"] = "Post created succesfully!";
-            return redirect()->route("posts.index")->with($signalMessages);
+                $signalMessages["status"] = "SUCCESS";
+                $signalMessages["message"] = "Post created succesfully!";
+
+                return redirect()->route("posts.index")->with($signalMessages);
+            }
+            catch(\Exception $e)
+            {
+                $signalMessages["status"] = "ERROR";
+                $signalMessages["message"] = "Could not create the post in the database, database connection problem!";
+            }
         }
         else
         {
             $signalMessages["status"] = "ERROR";
             $signalMessages["message"] = "All the required parameters should be passed in the request!";
-            return back()->with($signalMessages);
         }
+
+        return back()->with($signalMessages);
     }
 
     /**
@@ -100,11 +110,14 @@ class PostController extends Controller
                 "content" => "required|string|min:10|regex:".$this::textRegex
             ]);
 
-            $post->update($validated);
+            $success = $post->updateOrFail($validated);
+            if ($success)
+            {
+                $signalMessages["status"] = "SUCCESS";
+                $signalMessages["message"] = "Post edited succesfully!";
 
-            $signalMessages["status"] = "SUCCESS";
-            $signalMessages["message"] = "Post edited succesfully!";
-            return redirect()->route("posts.show", $post)->with($signalMessages);
+                return redirect()->route("posts.show", $post)->with($signalMessages);
+            }
         }
         else
         {
@@ -119,6 +132,18 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $signalMessages = [
+            "status" => "",
+            "message" => ""
+        ];
+
+        $success = $post->deleteOrFail();
+        if ($success)
+        {
+            $signalMessages["status"] = "SUCCESS";
+            $signalMessages["message"] = "Post deleted succesfully!";
+
+            return redirect()->route("posts.index")->with($signalMessages);
+        }
     }
 }

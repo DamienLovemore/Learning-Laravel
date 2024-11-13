@@ -1,6 +1,7 @@
 <x-layout>
     <x-slot:pageContent>
         <x-header>Posts Create Page</x-header>
+        <x-pagebuttons href="{{ route('posts.index') }}" />
         <x-messages />
 
         <div class="max-w-2xl mx-auto p-4 bg-slate-300 dark:bg-slate-800">

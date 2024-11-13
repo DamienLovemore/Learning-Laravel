@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Facade;
 
 return [
 
@@ -122,5 +123,19 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Aliased Classes
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option allows you to have class imported through all
+    | your code with a custom name (Alias).
+    |
+    */
+
+    'aliases' => Facade::defaultAliases()->merge([
+        'CSS' => \StyleConstants\CSSStyles::class,
+    ])->toArray()
 
 ];
