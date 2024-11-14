@@ -4,17 +4,14 @@
         <x-messages />
 
         <div class="m-4 p-6 bg-slate-300 dark:bg-slate-800">
-            <section>
-                <div class="flex justify-end mb-2">
-                    <a href="{{ route('posts.create') }}" class="text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">{{ __("Create") }}</a>
-                </div>
-            </section>
+            @auth
+                <section>
+                    <div class="flex justify-end mb-2">
+                        <a href="{{ route('posts.create') }}" class="text-white bg-blue-700 dark:bg-blue-600 hover:bg-blue-800 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">{{ __("Create") }}</a>
+                    </div>
+                </section>
+            @endauth
 
-            <!--
-                <div>
-                    /*__("My name is") . " " . $username . " " . __("and my age is") . " " . $age*/
-                </div>
-            -->
             <section>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ml-8 gap-6">
                     @foreach ($posts as $post)

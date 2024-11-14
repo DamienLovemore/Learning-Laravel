@@ -18,7 +18,18 @@
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul class="font-medium flex flex-column p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-slate-300 dark:bg-gray-800 md:dark:bg-gray-700 dark:border-gray-700">
                 <x-navbar-link href="/" :active="request()->is('/')">Home</x-navbar-link><!-- website -->
-                <x-navbar-link href="/posts" :active="request()->is('posts')">Posts</x-navbar-link><!-- website/posts -->
+                <x-navbar-link href="{{ route('posts.index') }}" :active="request()->is('posts')">Posts</x-navbar-link><!-- website/posts -->
+                @guest
+                    <x-navbar-link href="{{ route('login') }}" :active="request()->is('login')">Login</x-navbar-link><!-- website/login -->
+                    <x-navbar-link href="{{ route('register') }}" :active="request()->is('register')">Register</x-navbar-link><!-- website/register -->
+                @endguest
+                @auth
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+
+                        <x-navbar-link href="{{ route('logout') }}" :active="request()->is('logout')" onclick="event.preventDefault(); this.closest('form').submit();">Logout</x-navbar-link><!-- website/logout -->
+                    </form>
+                @endauth
 
                 <div class="!ml-12 !pl-12 w-auto relative bottom-4" onclick="togglePageTheme()">
                     <img id="toggle-DarkMode" class="w-auto h-auto">

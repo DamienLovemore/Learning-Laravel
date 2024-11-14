@@ -33,6 +33,7 @@ Route::group(["middleware" => "sessionpersist"], function(){
         //Users Login Handler
         Route::get("/login", [LoginUserController::class, "login"])->name("login");
         Route::post("/login", [LoginUserController::class, "store"])->name("login.store");
+        Route::post("/logout", [LoginUserController::class, "logout"])->name("logout");
 
         //Others
         Route::get("/clear", function(){

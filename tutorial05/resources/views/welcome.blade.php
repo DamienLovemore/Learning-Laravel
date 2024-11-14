@@ -1,6 +1,8 @@
 <x-layout>
     <x-slot:pageContent>
-        <h1>{{ __("Welcome Page") }}</h1>
-        <p>{{ __("Testing") }}</p>
+        <x-header>Welcome Page</x-header>
+        <x-messages />
+
+        
     </x-slot>
 </x-layout>

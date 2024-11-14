@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", loadDefaults);
 
 function loadDefaults()
 {
-    if (localStorage.theme === null)
+    if (localStorage.theme == null)
         localStorage.theme = "dark";
 
     loadThemeImage();
