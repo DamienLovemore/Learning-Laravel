@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 @php
+    //Sets the character encoding to be used in the "mb" functions
+    mb_internal_encoding("UTF-8");
+    mb_http_output("UTF-8");
+    mb_regex_encoding("UTF-8");
+
     $sessionLang = str_replace("_", "-", session("language", ""));
     $language = (mb_strlen($sessionLang) > 0) ? $sessionLang : str_replace("_", "-", app()->getLocale());
 @endphp

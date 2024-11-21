@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -44,13 +45,22 @@ class PostController extends Controller
         if ($request->filled("title") && $request->filled("content"))
         {
             $validated = $request->validate([
-                "title" => "required|string|min:3|max:30|unique:posts|regex:".$this::textRegex,
+                "title" => "required|string|min:3|max:70|unique:posts|regex:".$this::textRegex,
                 "content" => "required|string|min:10|regex:".$this::textRegex
             ]);
 
+            /*
+                //Gets the id of the current logged in user, and make this post be related to it.
+                $validated["user_id"] = auth()->id();
+            */
+
             try
             {
-                Post::create($validated);
+                //Old way without user
+                //Post::create($validated);
+
+                //Creates a new instance of the related model (One to Many, "User" being the "one")
+                auth()->user()->posts()->create($validated);
 
                 $signalMessages["status"] = "SUCCESS";
                 $signalMessages["message"] = "Post created succesfully!";
@@ -87,6 +97,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        //Only allow it to pass if it has the permissions
+        Gate::authorize("update", $post);
+
         return view("posts.edit", ["post" => $post]);
     }
 
@@ -95,6 +108,8 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        Gate::authorize("update", $post);
+
         $signalMessages = [
             "status" => "",
             "message" => ""
@@ -106,7 +121,7 @@ class PostController extends Controller
         if ($request->filled("title") && $request->filled("content"))
         {
             $validated = $request->validate([
-                "title" => "required|string|min:3|max:30|regex:".$this::textRegex,
+                "title" => "required|string|min:3|max:70|regex:".$this::textRegex,
                 "content" => "required|string|min:10|regex:".$this::textRegex
             ]);
 
@@ -132,6 +147,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize("delete", $post);
+
         $signalMessages = [
             "status" => "",
             "message" => ""

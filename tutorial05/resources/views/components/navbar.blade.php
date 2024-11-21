@@ -24,6 +24,15 @@
                     <x-navbar-link href="{{ route('register') }}" :active="request()->is('register')">Register</x-navbar-link><!-- website/register -->
                 @endguest
                 @auth
+                    @php
+                        //Pega as primeiras 3 palavras
+                        $username = Str::words(Auth::user()->name, 3);
+
+                        //Se ainda assim ficou grande, limita a aparecer 18 caracteres apenas
+                        if (mb_strlen($username) > 18)
+                            $username = Str::of($username)->take(15) . "...";
+                    @endphp
+                    <span class="text-blue-600 dark:text-blue-400 font-semibold">{{ $username }}</span>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
 
