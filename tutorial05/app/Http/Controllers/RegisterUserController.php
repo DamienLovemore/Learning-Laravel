@@ -14,7 +14,9 @@ class RegisterUserController extends Controller
 {
     public function register()
     {
-        return view("auth.register");
+        $passwordSH = "hide";
+
+        return view("auth.register", compact("passwordSH"));
     }
 
     public function store(Request $request)

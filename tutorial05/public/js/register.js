@@ -9,34 +9,45 @@ document.addEventListener("DOMContentLoaded", loadDefaults2);
 
 function loadDefaults2()
 {
-    if(localStorage.passSH == null)
-        localStorage.passSH = "hide";
-
     loadPasswordsSH();//Passwords show and hide
 
     eyePassword.addEventListener("click", togglePasswordsSH);
-    eyeConfPassword.addEventListener("click", togglePasswordsSH);
+    //Only exits in register, not login page
+    if (typeof passwordConfField !== "undefined" && passwordConfField !== null)
+    {
+        eyeConfPassword.addEventListener("click", togglePasswordsSH);
+    }
 }
 
 function loadPasswordsSH()
 {
-    if(localStorage.passSH === "hide")
+    if(defaultSHs === "hide")
     {
         //Hide the input text contents
         passwordField.type = "password";
-        passwordConfField.type = "password";
 
         //Some works with just ., and others need setAttribute to set and update the element right away
         pathEyePassword.setAttribute("d", EYE_CLOSED);
-        pathEyeConfPassword.setAttribute("d", EYE_CLOSED);
+
+        if (typeof passwordConfField !== "undefined" && passwordConfField !== null)
+        {
+            passwordConfField.type = "password";
+
+            pathEyeConfPassword.setAttribute("d", EYE_CLOSED);
+        }
     }
-    else if (localStorage.passSH === "show")
+    else if (defaultSHs === "show")
     {
         passwordField.type = "text";
-        passwordConfField.type = "text";
 
         pathEyePassword.setAttribute("d", EYE_OPENED);
-        pathEyeConfPassword.setAttribute("d", EYE_OPENED);
+
+        if(typeof passwordConfField !== "undefined" && passwordConfField !== null)
+        {
+            passwordConfField.type = "text";
+
+            pathEyeConfPassword.setAttribute("d", EYE_OPENED);
+        }
     }
 }
 
@@ -58,7 +69,7 @@ function togglePasswordsSH(event)
 
     if (inputRelated !== null)
     {
-        if(localStorage.passSH === "hide")
+        if(callerElement.getAttribute("d") === EYE_CLOSED)
         {
             inputRelated.type = "text";
 
@@ -66,7 +77,7 @@ function togglePasswordsSH(event)
 
             localStorage.passSH = "show";
         }
-        else if (localStorage.passSH === "show")
+        else if (callerElement.getAttribute("d") === EYE_OPENED)
         {
             inputRelated.type = "password";
 

@@ -24,7 +24,7 @@
                 <div class="mb-6">
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __("Password") }}</label>
                     <div class="flex flex-row">
-                        <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-11/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password_confirmation') border-red-300 dark:border-red-600 @enderror" id="password" name="password" required minlength="8" maxlength="35">
+                        <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-11/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') border-red-300 dark:border-red-600 @enderror" id="password" name="password" required minlength="8" maxlength="35">
                         <div class="relative left-2 w-1/12" id="containerPassSH">
                             <svg class="w-auto h-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" identifier="passSH">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"/>
@@ -71,6 +71,7 @@
         <script>
             const EYE_CLOSED = "{{ CSS::PATH_D_EYE_CLOSED }}";
             const EYE_OPENED = "{{ CSS::PATH_D_EYE_OPENED }}";
+            const defaultSHs = "{{ $passwordSH }}";
         </script>
         <script src="{{ asset("js/register.js") }}"></script>
     </x-slot>

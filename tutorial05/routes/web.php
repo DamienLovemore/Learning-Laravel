@@ -23,47 +23,49 @@ Route::group(["middleware" => "sessionpersist"], function(){
         //Home Page
         Route::view("/", "welcome")->name("home");//If you do not need additional logic, you can just use view
 
-        //Posts Handler
-        Route::resource("/posts", PostController::class);
+        Route::group(["middleware" => ["auth", "auth2"]], function(){
+            //Posts Logged Handler
+            Route::get("/posts/create", [PostController::class, "create"])->name("posts.create");
+            Route::post("/posts", [PostController::class, "store"])->name("posts.store");
+            Route::get("/posts/{post}/edit", [PostController::class, "edit"])->name("posts.edit");
+            Route::put("/posts/{post}", [PostController::class, "update"])->name("posts.update");
+            Route::delete("/posts/{post}", [PostController::class, "destroy"])->name("posts.destroy");
 
-        //Users Regist Handler
-        Route::get("/register", [RegisterUserController::class, "register"])->name("register");
-        Route::post("/register", [RegisterUserController::class, "store"])->name("register.store");
+            Route::post("/logout", [LoginUserController::class, "logout"])->name("logout");
 
-        //Users Login Handler
-        Route::get("/login", [LoginUserController::class, "login"])->name("login");
-        Route::post("/login", [LoginUserController::class, "store"])->name("login.store");
-        Route::post("/logout", [LoginUserController::class, "logout"])->name("logout");
+            //Others
+            Route::get("/clear", function(){
+                //Limpa tudo
+                Artisan::call("cache:clear");
+                Artisan::call("config:clear");
+                Artisan::call("route:clear");
+                Artisan::call("view:clear");
+                Artisan::call("event:clear");
+                Artisan::call("clear-compiled");
 
-        //Others
-        Route::get("/clear", function(){
-            //Limpa tudo
-            Artisan::call("cache:clear");
-            Artisan::call("config:clear");
-            Artisan::call("route:clear");
-            Artisan::call("view:clear");
-            Artisan::call("event:clear");
-            Artisan::call("clear-compiled");
+                //Forca refazer otimizacoes
+                Artisan::call("optimize");
 
-            //Forca refazer otimizacoes
-            Artisan::call("optimize");
+                return view("clearcaches");
+            })->name("clearlaravel");
+        });
 
-            return view("clearcaches");
-        })->name("clearlaravel");
+        //Unlogged user options
+        Route::group(["middleware" => "guest"], function(){
+            //Users Regist Handler
+            Route::get("/register", [RegisterUserController::class, "register"])->name("register");
+            Route::post("/register", [RegisterUserController::class, "store"])->name("register.store");
+
+            //Users Login Handler
+            Route::get("/login", [LoginUserController::class, "login"])->name("login");
+            Route::post("/login", [LoginUserController::class, "store"])->name("login.store");
+        });
+
+        //Post no need to log handler
+        Route::get("/posts", [PostController::class, "index"])->name("posts.index");
+        Route::get("/posts/{post}", [PostController::class, "show"])->middleware("can-view-post")->name("posts.show");
     });
 });
-
-
-//Post - Routes
-/*
-Route::get("/posts", [PostController::class, "index"]);
-Route::get("/posts/create", [PostController::class, "create"]);
-Route::post("/posts", [PostController::class, "store"]);
-Route::get("/posts/{id}", [PostController::class, "show"]);
-Route::get("/posts/{id}/edit", [PostController::class, "edit"]);
-Route::put("/posts/{id}", [PostController::class, "update"]);
-Route::delete("/posts/{id}", [PostController::class, "destroy"]);
-*/
 
 /*
 Route::get("/test", function (){
