@@ -1,6 +1,4 @@
 <?php
-
-use App\Http\Middleware\CanViewPost;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -8,6 +6,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\LanguageSet;
 use App\Http\Middleware\SessionPersist;
 use App\Http\Middleware\auth2;
+use App\Http\Middleware\CanViewPost;
+use App\Http\Middleware\IsAdminMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,7 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
             "sessionpersist" => SessionPersist::class,
             "languageset" => LanguageSet::class,
             "auth2" => auth2::class,
-            "can-view-post" => CanViewPost::class
+            "can-view-post" => CanViewPost::class,
+            "is-admin" => IsAdminMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

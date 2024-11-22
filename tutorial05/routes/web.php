@@ -1,10 +1,11 @@
 <?php
-
-use App\Http\Controllers\LoginUserController;
-use App\Http\Controllers\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterUserController;
+use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\AdminController;
 
 /*
 Route::get('/', function () {
@@ -32,6 +33,8 @@ Route::group(["middleware" => "sessionpersist"], function(){
             Route::delete("/posts/{post}", [PostController::class, "destroy"])->name("posts.destroy");
 
             Route::post("/logout", [LoginUserController::class, "logout"])->name("logout");
+
+            Route::get("/admin", [AdminController::class, "index"])->middleware("is-admin")->name("admin");
 
             //Others
             Route::get("/clear", function(){
@@ -63,7 +66,7 @@ Route::group(["middleware" => "sessionpersist"], function(){
 
         //Post no need to log handler
         Route::get("/posts", [PostController::class, "index"])->name("posts.index");
-        Route::get("/posts/{post}", [PostController::class, "show"])->middleware("can-view-post")->name("posts.show");
+        Route::get("/posts/{post}", [PostController::class, "show"])->name("posts.show");
     });
 });
 

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
+
 use App\Models\Post;
 use App\Models\User;
 
@@ -53,7 +54,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): Response
     {
-        return ($user->id === $post->id) ? Response::allow() : Response::deny(__("You do not have the necessary permissions to do this"), 403);
+        return ($user->id === $post->user_id) ? Response::allow() : Response::deny(__("You do not have the necessary permissions to do this"), 403);
     }
 
     /**
@@ -61,6 +62,6 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): Response
     {
-        return ($user->id === $post->id) ? Response::allow() : Response::deny(__("You do not have the necessary permissions to do this"), 403);
+        return ($user->id === $post->user_id) ? Response::allow() : Response::deny(__("You do not have the necessary permissions to do this"), 403);
     }
 }

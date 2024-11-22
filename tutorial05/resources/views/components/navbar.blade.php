@@ -19,6 +19,9 @@
             <ul class="font-medium flex flex-column p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-slate-300 dark:bg-gray-800 md:dark:bg-gray-700 dark:border-gray-700">
                 <x-navbar-link href="/" :active="request()->is('/')">Home</x-navbar-link><!-- website -->
                 <x-navbar-link href="{{ route('posts.index') }}" :active="request()->is('posts')">Posts</x-navbar-link><!-- website/posts -->
+                @if (Auth::check() && Auth::user()->is_admin)
+                    <x-navbar-link href="{{ route('admin') }}" :active="request()->is('admin')">Admin</x-navbar-link>
+                @endif
                 @guest
                     <x-navbar-link href="{{ route('login') }}" :active="request()->is('login')">Login</x-navbar-link><!-- website/login -->
                     <x-navbar-link href="{{ route('register') }}" :active="request()->is('register')">Register</x-navbar-link><!-- website/register -->
