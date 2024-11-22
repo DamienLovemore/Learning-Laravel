@@ -13,6 +13,8 @@ class AdminController extends Controller
     {
         $posts = Post::all();
 
+        session()->put("showPostsFrom", "admin");
+
         return view("admin.index", compact("posts"));
     }
 }

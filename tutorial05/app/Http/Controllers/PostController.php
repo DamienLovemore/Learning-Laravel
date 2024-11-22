@@ -18,6 +18,8 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
+        session()->put("showPostsFrom", "posts");
+
         return view("posts.index", ["posts" => $posts]);
     }
 
@@ -65,7 +67,13 @@ class PostController extends Controller
                 $signalMessages["status"] = "SUCCESS";
                 $signalMessages["message"] = "Post created succesfully!";
 
-                return redirect()->route("posts.index")->with($signalMessages);
+                $targetRedirect = session("showPostsFrom", "posts");
+                $urlRedirect = route("posts.index");
+
+                if($targetRedirect === "admin")
+                    $urlRedirect = route("admin");
+
+                return redirect()->to($urlRedirect)->with($signalMessages);
             }
             catch(\Exception $e)
             {
@@ -160,7 +168,13 @@ class PostController extends Controller
             $signalMessages["status"] = "SUCCESS";
             $signalMessages["message"] = "Post deleted succesfully!";
 
-            return redirect()->route("posts.index")->with($signalMessages);
+            $targetRedirect = session("showPostsFrom", "posts");
+            $urlRedirect = route("posts.index");
+
+            if($targetRedirect === "admin")
+                $urlRedirect = route("admin");
+
+            return redirect()->to($urlRedirect)->with($signalMessages);
         }
     }
 }

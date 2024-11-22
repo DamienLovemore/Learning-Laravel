@@ -37,6 +37,7 @@
                 </div>
             </form>
         </div>
+        
         <script>
             const EYE_CLOSED = "{{ CSS::PATH_D_EYE_CLOSED }}";
             const EYE_OPENED = "{{ CSS::PATH_D_EYE_OPENED }}";
