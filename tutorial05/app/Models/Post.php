@@ -13,7 +13,8 @@ class Post extends Model
     protected $fillable = [
         "title",
         "content",
-        "user_id"
+        "user_id",
+        "thumbnail"
     ];
 
     //Mark that this model is part of a one to many relationship, being "User" the "one".

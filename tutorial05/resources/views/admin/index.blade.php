@@ -21,6 +21,9 @@
                                 {{ __("Title") }}
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                {{ __("Image") }}
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 {{ __("Created at") }}
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -37,16 +40,21 @@
                         @forelse ($posts as $post)
                             @php
                                 $count++;
-                                
+
                                 $targetModal = $target . $count;
                             @endphp
 
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap" onclick="showPost({{ $post->id }})">
+                                <th scope="row" class="px-6 py-4" onclick="showPost({{ $post->id }})">
                                     {{ $post->id }}
                                 </th>
-                                <td class="px-6 py-4" onclick="showPost({{ $post->id }})">
+                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap" onclick="showPost({{ $post->id }})">
                                     {{ $post->title }}
+                                </td>
+                                <td class="px-6 py-4" onclick="showPost({{ $post->id }})">
+                                    @if (!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
+                                        <img src="{{ asset('storage/' . $post->thumbnail) }}" class="w-full h-10" alt="{{ __('Post Thumbnail') }}">
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4" onclick="showPost({{ $post->id }})">
                                     {{ $post->created_at }}

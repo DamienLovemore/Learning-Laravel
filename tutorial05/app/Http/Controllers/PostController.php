@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\File;
+
+use App\Models\Post;
+
 
 class PostController extends Controller
 {
-    private const textRegex = "/^[a-zA-Z0-9\s\-\.\;\,\!\:\?\"\“\”\'\(\)wáéíóúâêîôûãõçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]+$/";
+    private const textRegex = "/^[a-zA-Z0-9\s\-\.\;\,\!\:\?\%\⁰\"\“\”\'\(\)wáéíóúâêîôûãõçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]+$/";
+    private const imageValdRules = "image|extensions:png,jpg,jpeg|mimetypes:image/png,image/jpeg|min:2";
+    private const imageThumbRules = "dimensions:min_width=200,min_height=200,max_width=800,max_height=800";
 
     /**
      * Display a listing of the resource.
@@ -48,7 +54,8 @@ class PostController extends Controller
         {
             $validated = $request->validate([
                 "title" => "required|string|min:3|max:70|unique:posts|regex:".$this::textRegex,
-                "content" => "required|string|min:10|regex:".$this::textRegex
+                "content" => "required|string|min:10|regex:" . $this::textRegex,
+                "thumbnail" => $this::imageValdRules . "|" . $this::imageThumbRules
             ]);
 
             /*
@@ -60,6 +67,28 @@ class PostController extends Controller
             {
                 //Old way without user
                 //Post::create($validated);
+
+                //After the validation has passed with we pass thumbnail the way it is we will store the path of temp file, and not actually store the image in the filesystem. of the server.
+                $uploadedFile = $request->file("thumbnail");
+                if(!empty($uploadedFile))
+                {
+                    $currentTimeStamp = Date::now();
+                    $currentTimeStamp = $currentTimeStamp->format("Y_m_d_h_i_s");
+                    [$name, $extension] = explode(".", $uploadedFile->getClientOriginalName());
+
+                    //Tenta salvar com nome original do arquivo + data/hora
+                    if (mb_strlen($name) > 0 && mb_strlen($extension) > 0)
+                    {
+                        $fileName = $name . "_" . $currentTimeStamp . ("." . $extension);
+
+                        //Store in the "thumbnails" directory within the app folder, with the specified filename, and returns the path to it in a string
+                        $validated["thumbnail"] = $uploadedFile->storeAs("thumbnails", $fileName);
+                    }
+                    else //Caso contrário gera um nome aleatório
+                    {
+                        $validated["thumbnail"] = $uploadedFile->store("thumbnails");
+                    }
+                }
 
                 //Creates a new instance of the related model (One to Many, "User" being the "one")
                 auth()->user()->posts()->create($validated);
@@ -130,8 +159,35 @@ class PostController extends Controller
         {
             $validated = $request->validate([
                 "title" => "required|string|min:3|max:70|regex:".$this::textRegex,
-                "content" => "required|string|min:10|regex:".$this::textRegex
+                "content" => "required|string|min:10|regex:" . $this::textRegex,
+                "thumbnail" => "sometimes|" . $this::imageValdRules . "|" . "dimensions:min_width=200,min_height=200,max_width=800,max_height=800"
             ]);
+
+            if($request->hasFile("thumbnail"))
+            {
+                $uploadedFile = $request->file("thumbnail");
+                $currentTimeStamp = Date::now();
+                $currentTimeStamp = $currentTimeStamp->format("Y_m_d_h_i_s");
+                [$name, $extension] = explode(".", $uploadedFile->getClientOriginalName());
+
+                //If the user has uploaded a File them deletes it, to put the new file.
+                if(!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
+                {
+                    $storedFilePath = storage_path("app/public/" . $post->thumbnail);
+                    File::delete($storedFilePath);
+                }
+
+                if (mb_strlen($name) > 0 && mb_strlen($extension) > 0)
+                {
+                    $fileName = $name . "_" . $currentTimeStamp . ("." . $extension);
+
+                    $validated["thumbnail"] = $uploadedFile->storeAs("thumbnails", $fileName);
+                }
+                else
+                {
+                    $validated["thumbnail"] = $uploadedFile->store("thumbnails");
+                }
+            }
 
             $success = $post->updateOrFail($validated);
             if ($success)
@@ -162,11 +218,34 @@ class PostController extends Controller
             "message" => ""
         ];
 
-        $success = $post->deleteOrFail();
-        if ($success)
+        if (!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
+        {
+            $storedFilePath = storage_path("app/public/" . $post->thumbnail);
+            $successFile = File::delete($storedFilePath);
+        }
+        else
+        {
+            $successFile = true;
+        }
+
+        $successModel = $post->deleteOrFail();
+        if ($successFile && $successModel)
         {
             $signalMessages["status"] = "SUCCESS";
             $signalMessages["message"] = "Post deleted succesfully!";
+
+            $targetRedirect = session("showPostsFrom", "posts");
+            $urlRedirect = route("posts.index");
+
+            if($targetRedirect === "admin")
+                $urlRedirect = route("admin");
+
+            return redirect()->to($urlRedirect)->with($signalMessages);
+        }
+        else if (!$successFile)//Verifica se o modelo foi apagado com sucesso, mais o arquivo de imagem thumbnail não.
+        {
+            $signalMessages["status"] = "WARNING";
+            $signalMessages["message"] = "Post deleted succesfully, but the file thumbnail file could not be deleted!";
 
             $targetRedirect = session("showPostsFrom", "posts");
             $urlRedirect = route("posts.index");

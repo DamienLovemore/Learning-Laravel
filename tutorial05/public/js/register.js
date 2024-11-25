@@ -21,15 +21,25 @@ function loadDefaults2()
 
 function loadPasswordsSH()
 {
+    var eventBlockers = ["copy", "paste", "cut"];
+    var hasConfField = (typeof passwordConfField !== "undefined" && passwordConfField !== null);
+
     if(defaultSHs === "hide")
     {
+        //Add event listeners to block copy, paste and cut actions
+        eventBlockers.forEach(function(eventType) {
+            passwordField.addEventListener(eventType, (event) => { event.preventDefault(); });//Arrow functions = inline, one line functions
+            if (hasConfField)
+                passwordConfField.addEventListener(eventType, (event) => { event.preventDefault(); });
+        });
+
         //Hide the input text contents
         passwordField.type = "password";
 
         //Some works with just ., and others need setAttribute to set and update the element right away
         pathEyePassword.setAttribute("d", EYE_CLOSED);
 
-        if (typeof passwordConfField !== "undefined" && passwordConfField !== null)
+        if (hasConfField)
         {
             passwordConfField.type = "password";
 
@@ -38,11 +48,17 @@ function loadPasswordsSH()
     }
     else if (defaultSHs === "show")
     {
+        eventBlockers.forEach(function(eventType) {
+            passwordField.removeEventListener(eventType);
+            if(hasConfField)
+                passwordConfField.removeEventListener(eventType);
+        });
+
         passwordField.type = "text";
 
         pathEyePassword.setAttribute("d", EYE_OPENED);
 
-        if(typeof passwordConfField !== "undefined" && passwordConfField !== null)
+        if(hasConfField)
         {
             passwordConfField.type = "text";
 
@@ -53,6 +69,7 @@ function loadPasswordsSH()
 
 function togglePasswordsSH(event)
 {
+    var eventBlockers = ["copy", "paste", "cut"];
     var callerElement = event.target.getAttribute("identifier");//Who called this event
     //Gets the input password related to this eye show/hide.
     var inputRelated = null;
@@ -73,6 +90,11 @@ function togglePasswordsSH(event)
         {
             inputRelated.type = "text";
 
+            //Since we used arrow functions we do not have the reference to remove the function listener, so
+            //we recreate the element passing the past value and attributes.
+            let newElement = inputRelated.cloneNode(true);//true - also include its decendants, does not have, but just in case.
+            newElement = inputRelated.parentNode.replaceChild(newElement, inputRelated);//new_element, old_element
+
             callerElement.setAttribute("d", EYE_OPENED);
 
             localStorage.passSH = "show";
@@ -80,6 +102,10 @@ function togglePasswordsSH(event)
         else if (callerElement.getAttribute("d") === EYE_OPENED)
         {
             inputRelated.type = "password";
+
+            eventBlockers.forEach(function(eventType) {
+                inputRelated.addEventListener(eventType, (event) => { event.preventDefault(); });
+            });
 
             callerElement.setAttribute("d", EYE_CLOSED);
 

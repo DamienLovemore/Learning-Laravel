@@ -13,9 +13,13 @@
             @endauth
 
             <section>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ml-8 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ml-4 gap-6">
                     @foreach ($posts as $post)
                         <div class="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow" style="max-width: 23rem;">
+                            @if (!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
+                                <img class="w-full h-20 rounded-lg" src={{ asset("storage/" . $post->thumbnail) }} alt="{{ __('Post Thumbnail') }}">
+                            @endif
+
                             <a href="{{ route("posts.show", $post->id) }}">
                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->title }}</h5>
                             </a>

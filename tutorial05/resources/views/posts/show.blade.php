@@ -20,14 +20,22 @@
         </x-pagebuttons>
         <x-messages />
 
-        <div class="m-4 p-6 bg-slate-300 dark:bg-slate-800">
+        <div class="m-4 p-6 pb-0 bg-slate-300 dark:bg-slate-800">
+            <section>
+                @if (!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
+                    <div class="max-w-full h-60 mx-auto mb-3">
+                        <img class="h-full w-full object-fit" src="{{ asset('storage/' . $post->thumbnail) }}">
+                    </div>
+                @endif
+            </section>
+
             <main>
                 <div class="mx-auto text-center">
-                    <div class="max-w-full p-6 bg-slate-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow">
+                    <div class="max-w-full p-6 pb-1 bg-slate-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow">
                         <a href="{{ route("posts.show", $post->id) }}">
                             <h5 class="mb-2 text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ $post->title }}</h5>
                         </a>
-                        <pre class="mb-3 text-lg font-normal text-balance text-gray-700 dark:text-gray-400">{{ $post->content }}</pre>
+                        <pre class="text-lg font-normal text-balance text-gray-700 dark:text-gray-400">{{ $post->content }}</pre>
                     </div>
                 </div><br>
             </main>
