@@ -7,15 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 use App\Models\Post;
-
+use App\Mail\PostMail;
 
 class PostController extends Controller
 {
-    private const textRegex = "/^[a-zA-Z0-9\s\-\.\;\,\!\:\?\%\⁰\"\“\”\'\(\)wáéíóúâêîôûãõçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]+$/";
-    private const imageValdRules = "image|extensions:png,jpg,jpeg|mimetypes:image/png,image/jpeg|min:2";
-    private const imageThumbRules = "dimensions:min_width=200,min_height=200,max_width=800,max_height=800";
+    private const textRegex = "/^[a-zA-Z0-9\s\-\—\.\;\,\!\:\?\%\⁰\&\"\“\”\'\(\)\[\]wàáéíóúâêîôûãõçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]+$/";
+    private const imageValdRules = "image|extensions:png,jpg,jpeg|min:2";
+    private const imageThumbRules = "dimensions:min_width=200,min_height=200,max_width=1280,max_height=720";
 
     /**
      * Display a listing of the resource.
@@ -35,6 +37,40 @@ class PostController extends Controller
     public function create()
     {
         return view("posts.create");
+    }
+
+    //An email send to the user email, when a new post from them is created
+    private function welcomePostMail(string $title, string $content, string|null $thumbnail, string $postUrl): bool
+    {
+        $mailSent = false;
+
+        try
+        {
+            $currentUser = auth()->user();
+            $mailAttr = [
+                "name" => $currentUser->name,
+                "title" => $title,
+                "content" => $content,
+                "thumbnail" => $thumbnail,
+                "postUrl" => $postUrl
+            ];
+            $mailInstance = new PostMail($mailAttr);
+            $userEmail = $currentUser->email;
+
+            $mailToSend = Mail::to($userEmail);
+
+            $response = $mailToSend->send($mailInstance);//Returns SentMessage on success or null when cannot send
+
+            if(!empty($response))
+                $mailSent = true;
+        }
+        catch(\Exception $error)
+        {
+            dd($error->getMessage() . " " . $error->getLine());
+            $mailSent = false;
+        }
+
+        return $mailSent;
     }
 
     /**
@@ -69,9 +105,10 @@ class PostController extends Controller
                 //Post::create($validated);
 
                 //After the validation has passed with we pass thumbnail the way it is we will store the path of temp file, and not actually store the image in the filesystem. of the server.
-                $uploadedFile = $request->file("thumbnail");
-                if(!empty($uploadedFile))
+                $urlStoredImage = null;
+                if($request->hasFile("thumbnail"))
                 {
+                    $uploadedFile = $request->file("thumbnail");
                     $currentTimeStamp = Date::now();
                     $currentTimeStamp = $currentTimeStamp->format("Y_m_d_h_i_s");
                     [$name, $extension] = explode(".", $uploadedFile->getClientOriginalName());
@@ -88,10 +125,18 @@ class PostController extends Controller
                     {
                         $validated["thumbnail"] = $uploadedFile->store("thumbnails");
                     }
+
+                    //Pega a url verdadeira que foi salva, e não a temporária original antes de pegar o valor de ->store
+                    $urlStoredImage = asset("storage/" . $validated["thumbnail"]);
                 }
 
                 //Creates a new instance of the related model (One to Many, "User" being the "one")
-                auth()->user()->posts()->create($validated);
+                $createdPost = auth()->user()->posts()->create($validated);
+
+                //Try to send a welcome email to the user
+                $formattedBody = Str::words($validated["content"], 20, "...");
+                
+                $this->welcomePostMail($validated["title"], $formattedBody, $urlStoredImage, route("posts.show", $createdPost));
 
                 $signalMessages["status"] = "SUCCESS";
                 $signalMessages["message"] = "Post created succesfully!";
@@ -160,7 +205,7 @@ class PostController extends Controller
             $validated = $request->validate([
                 "title" => "required|string|min:3|max:70|regex:".$this::textRegex,
                 "content" => "required|string|min:10|regex:" . $this::textRegex,
-                "thumbnail" => "sometimes|" . $this::imageValdRules . "|" . "dimensions:min_width=200,min_height=200,max_width=800,max_height=800"
+                "thumbnail" => "sometimes|" . $this::imageValdRules . "|" . $this::imageThumbRules
             ]);
 
             if($request->hasFile("thumbnail"))

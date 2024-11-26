@@ -19,7 +19,7 @@
                 <div class="mb-6">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">{{ __("Upload Thumbnail") }}</label>
                     <input class="block w-full text-sm text-gray-900 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" name="thumbnail" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg"><!-- Should include extensions and MIME types for better compatibility -->
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">{{ __("PNG, JPG, or JPEG (MIN. 200x200px; MAX. 800x800px)") }}</p>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">{{ __("PNG, JPG, or JPEG (MIN. 200x200px; MAX. 1280x720px)") }}</p>
                 </div>
                 <div>
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ __("Save") }}</button>
