@@ -24,7 +24,7 @@
             <section>
                 @if (!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
                     <div class="max-w-full h-60 mx-auto mb-3">
-                        <img class="h-full w-full object-fit" src="{{ asset('storage/' . $post->thumbnail) }}">
+                        <img src="{{ asset('storage/' . $post->thumbnail) }}" class="h-full w-full object-fit" alt="{{ __('Post Thumbnail') }}">
                     </div>
                 @endif
             </section>

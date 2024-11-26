@@ -17,7 +17,7 @@
                     @foreach ($posts as $post)
                         <div class="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow" style="max-width: 23rem;">
                             @if (!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
-                                <img class="w-full h-20 rounded-lg" src={{ asset("storage/" . $post->thumbnail) }} alt="{{ __('Post Thumbnail') }}">
+                                <img src="{{ asset('storage/' . $post->thumbnail) }}" class="w-full h-20 rounded-lg" alt="{{ __('Post Thumbnail') }}">
                             @endif
 
                             <a href="{{ route("posts.show", $post->id) }}">

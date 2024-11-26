@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNewPostMailJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 use App\Models\Post;
-use App\Mail\PostMail;
 
 class PostController extends Controller
 {
@@ -37,40 +36,6 @@ class PostController extends Controller
     public function create()
     {
         return view("posts.create");
-    }
-
-    //An email send to the user email, when a new post from them is created
-    private function welcomePostMail(string $title, string $content, string|null $thumbnail, string $postUrl): bool
-    {
-        $mailSent = false;
-
-        try
-        {
-            $currentUser = auth()->user();
-            $mailAttr = [
-                "name" => $currentUser->name,
-                "title" => $title,
-                "content" => $content,
-                "thumbnail" => $thumbnail,
-                "postUrl" => $postUrl
-            ];
-            $mailInstance = new PostMail($mailAttr);
-            $userEmail = $currentUser->email;
-
-            $mailToSend = Mail::to($userEmail);
-
-            $response = $mailToSend->send($mailInstance);//Returns SentMessage on success or null when cannot send
-
-            if(!empty($response))
-                $mailSent = true;
-        }
-        catch(\Exception $error)
-        {
-            dd($error->getMessage() . " " . $error->getLine());
-            $mailSent = false;
-        }
-
-        return $mailSent;
     }
 
     /**
@@ -111,12 +76,18 @@ class PostController extends Controller
                     $uploadedFile = $request->file("thumbnail");
                     $currentTimeStamp = Date::now();
                     $currentTimeStamp = $currentTimeStamp->format("Y_m_d_h_i_s");
-                    [$name, $extension] = explode(".", $uploadedFile->getClientOriginalName());
+
+                    $originalName = $uploadedFile->getClientOriginalName();
+                    $lastPos = strrpos($originalName, ".");
+                    $extensionPart = substr($originalName, $lastPos);
+                    $name = explode($extensionPart, $originalName)[0];
 
                     //Tenta salvar com nome original do arquivo + data/hora
-                    if (mb_strlen($name) > 0 && mb_strlen($extension) > 0)
+                    if (mb_strlen($name) > 0 && mb_strlen($extensionPart) > 0)
                     {
-                        $fileName = $name . "_" . $currentTimeStamp . ("." . $extension);
+                        $fileName = $name . "_" . $currentTimeStamp . $extensionPart;
+                        //Removes all whitespaces to prevent not being able to attach images in a email
+                        $fileName = preg_replace("/\s+/", '', $fileName);
 
                         //Store in the "thumbnails" directory within the app folder, with the specified filename, and returns the path to it in a string
                         $validated["thumbnail"] = $uploadedFile->storeAs("thumbnails", $fileName);
@@ -133,10 +104,11 @@ class PostController extends Controller
                 //Creates a new instance of the related model (One to Many, "User" being the "one")
                 $createdPost = auth()->user()->posts()->create($validated);
 
-                //Try to send a welcome email to the user
+                //Try to send a welcome email to the user, using jobs so it is asyncronous and does not make create takes too long.
                 $formattedBody = Str::words($validated["content"], 20, "...");
-                
-                $this->welcomePostMail($validated["title"], $formattedBody, $urlStoredImage, route("posts.show", $createdPost));
+
+                $emailJob = new SendNewPostMailJob($validated["title"], $formattedBody, $urlStoredImage, route("posts.show", $createdPost->id));
+                dispatch($emailJob);
 
                 $signalMessages["status"] = "SUCCESS";
                 $signalMessages["message"] = "Post created succesfully!";
@@ -213,7 +185,11 @@ class PostController extends Controller
                 $uploadedFile = $request->file("thumbnail");
                 $currentTimeStamp = Date::now();
                 $currentTimeStamp = $currentTimeStamp->format("Y_m_d_h_i_s");
-                [$name, $extension] = explode(".", $uploadedFile->getClientOriginalName());
+
+                $originalName = $uploadedFile->getClientOriginalName();
+                $lastPos = strrpos($originalName, ".");
+                $extensionPart = substr($originalName, $lastPos);
+                $name = explode($extensionPart, $originalName)[0];
 
                 //If the user has uploaded a File them deletes it, to put the new file.
                 if(!empty($post->thumbnail) && mb_strlen($post->thumbnail) > 0)
@@ -222,9 +198,10 @@ class PostController extends Controller
                     File::delete($storedFilePath);
                 }
 
-                if (mb_strlen($name) > 0 && mb_strlen($extension) > 0)
+                if (mb_strlen($name) > 0 && mb_strlen($extensionPart) > 0)
                 {
-                    $fileName = $name . "_" . $currentTimeStamp . ("." . $extension);
+                    $fileName = $name . "_" . $currentTimeStamp . $extensionPart;
+                    $fileName = preg_replace("/\s+/", '', $fileName);
 
                     $validated["thumbnail"] = $uploadedFile->storeAs("thumbnails", $fileName);
                 }
