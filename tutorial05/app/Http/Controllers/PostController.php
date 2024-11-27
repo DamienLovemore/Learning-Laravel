@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\Post;
 
@@ -23,7 +24,17 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        //Get all posts
+        //$posts = Post::all();
+
+        //Display 9 Posts per page
+        if (Cache::has("posts"))
+            $posts = Cache::get("posts");
+        else
+        {
+            $posts = Post::paginate(9);
+            Cache::put("posts", $posts, 10);//Store in the cache for 10 seconds
+        }
 
         session()->put("showPostsFrom", "posts");
 

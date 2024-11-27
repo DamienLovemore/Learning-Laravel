@@ -35,7 +35,10 @@
                 </div><br>
             </section>
 
-            <footer>
+            <footer class="mt-6">
+                <div >
+                    {{ $posts->links() }}
+                </div>
                 {{ __("Today's Date")}}: {{ date("Y-m-d") }}
             </footer>
         </div>
