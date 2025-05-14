@@ -202,5 +202,11 @@
   "Header": "Cabeçalho",
   "Footer": "Rodapé",
   "Orders": "Compras",
-  "Cart": "Carrinho"
+  "Cart": "Carrinho",
+  "name@example.com": "nome@exemplo.com",
+  "Sign in": "Entrar",
+  "Type your search": "Digite a sua pesquisa",
+  "Search": "Pesquisar",
+  "Footer content": "Conteúdo Rodapé",
+  "End of footer": "Fim do rodapé"
 }
