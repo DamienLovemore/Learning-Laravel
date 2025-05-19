@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ __('E-comm Project') }}</title>
+        <link rel="icon" type="image/png" href="{{ asset("favicon.png") }}" sizes="32x32" href="">
 
         <!-- CDN Imports -->
         <!-- Jquery-->
@@ -40,11 +41,11 @@
         </div>
 
         <script>
-            $(document).ready(() => {
-                $("button").click(() => {
-                    alert('{{ __("All set") }}');
-                });
-            });
+            // $(document).ready(() => {
+            //     $("button").click(() => {
+            //         alert('{{ __("All set") }}');
+            //     });
+            // });
         </script>
     </body>
 </html>

@@ -208,5 +208,10 @@
   "Type your search": "Digite a sua pesquisa",
   "Search": "Pesquisar",
   "Footer content": "Conteúdo Rodapé",
-  "End of footer": "Fim do rodapé"
+  "End of footer": "Fim do rodapé",
+  "Clear Caches": "Limpar Caches",
+  "Laravel cache was cleared sucessfully!": "O cache do Laravel foi limpo com sucesso!",
+  "The user was found": "O usuário foi encontrado",
+  "The user was not found": "O usuário não foi encontrado",
+  "Welcome to product page": "Bem-vindo a página de produtos"
 }

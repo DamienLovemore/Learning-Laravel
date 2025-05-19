@@ -3,7 +3,7 @@
     <div class="custom-login">
         <div class="row">
             <div class="col-sm-4">
-                <form class="form-floating" action="login" method="POST">
+                <form class="form-floating" action="/loginsend" method="POST">
                     @csrf
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="floatingInput" name="email" placeholder="{{ __('name@example.com') }}">

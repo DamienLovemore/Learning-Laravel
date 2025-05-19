@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        //use overrides the default, while append keeps them and just add one more
+        $middleware->alias([
+            "sessionpersist" => \App\Http\Middleware\SessionPersist::class,//Starts the session in Laravel Automatically
+            "auth2" => \App\Http\Middleware\UserAuth::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
