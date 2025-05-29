@@ -201,5 +201,13 @@
   "Add Person": "Adicionar Pessoa",
   "Test": "Teste",
   "test": "teste",
-  "People Registration": "Cadastro de Pessoas"
+  "People Registration": "Cadastro de Pessoas",
+  "Add a new person": "Adicionar uma nova pessoa",
+  "First name": "Primeiro nome",
+  "Last name": "Sobrenome",
+  "Actions": "Ações",
+  "Edit a person": "Editar uma pessoa",
+  "People Editing": "Alteração de Cadastro",
+  "People Erasing": "Exclusão de Cadastro",
+  "Delete a person": "Apagar o registro de uma pessoa"
 }

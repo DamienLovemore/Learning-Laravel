@@ -29,6 +29,9 @@
                                 <th>
                                     {{__('Phone')}}
                                 </th>
+                                <th>
+                                    {{__('Actions')}}
+                                </th>
                             </tr>
                         </thead>
 
@@ -38,6 +41,14 @@
                                     <td>{{ $person->firstname }} {{ $person->lastname }}</td>
                                     <td>{{ $person->email }}</td>
                                     <td>{{ $person->phone }}</td>
+                                    <td>
+                                        <a href="{{ route("person.edit", $person->id) }}">
+                                            <i class="uil uil-edit w-full text-2xl"></i>
+                                        </a>
+                                        <a href="{{ route("person.delete", $person->id) }}">
+                                            <i class="uil uil-trash-alt w-full text-2xl"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

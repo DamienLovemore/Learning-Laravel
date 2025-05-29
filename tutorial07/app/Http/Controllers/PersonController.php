@@ -32,7 +32,21 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "firstname" => "required",
+            "lastname"  => "required",
+            "email"     => "nullable|email",
+            "phone"     => "nullable"
+        ]);
+
+        $person = new Person();
+        $person->firstname = $request->input("firstname");
+        $person->lastname  = $request->input("lastname");
+        $person->email     = $request->input("email");
+        $person->phone     = $request->input("phone");
+        $person->save();
+
+        return redirect(route("person.index"));
     }
 
     /**
@@ -40,7 +54,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        //
+
     }
 
     /**
@@ -48,7 +62,7 @@ class PersonController extends Controller
      */
     public function edit(Person $person)
     {
-        //
+        return view("person.edit")->with("person", $person);
     }
 
     /**
@@ -56,7 +70,29 @@ class PersonController extends Controller
      */
     public function update(Request $request, Person $person)
     {
-        //
+        $validated = $request->validate([
+            "firstname" => "required",
+            "lastname"  => "required",
+            "email"     => "nullable|email",
+            "phone"     => "nullable"
+        ]);
+
+        $person->firstname = $request->input("firstname");
+        $person->lastname  = $request->input("lastname");
+        $person->email     = $request->input("email");
+        $person->phone     = $request->input("phone");
+        $person->save();
+
+        return redirect(route("person.index"));
+    }
+
+    public function delete(Person $person)
+    {
+        $data = [
+            "person" => $person
+        ];
+
+        return view("person.delete", $data);
     }
 
     /**
@@ -64,6 +100,8 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        //
+        $person->deleteOrFail();
+
+        return redirect(route("person.index"));
     }
 }

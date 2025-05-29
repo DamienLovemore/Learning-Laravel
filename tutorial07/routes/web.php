@@ -25,6 +25,7 @@ Route::controller(PersonController::class)->prefix("person")->name("person")->mi
     Route::post("/store", "store")->name(".store");
     Route::get("/{person}/edit", "edit")->name(".edit");
     Route::put("/{person}/update", "update")->name(".update");
+    Route::get("/{person}/delete", "delete")->name(".delete");
     Route::delete("/{person}/destroy", "destroy")->name(".destroy");
 });
 
