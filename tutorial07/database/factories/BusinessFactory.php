@@ -16,10 +16,11 @@ class BusinessFactory extends Factory
      */
     public function definition(): array
     {
+        //Factory usage example: \App\Models\Item::factory(10)->create();
+        //You can also use database seed: php artisan make:seeder UsersTableSeeder and php artisan db:seed
         return [
             "business_name" => fake()->company(),
-            "contact_email" => fake()->unique()->companyEmail(),
-            "phone"         => fake()->phoneNumber()
+            "contact_email" => fake()->unique()->companyEmail()
         ];
     }
 }
