@@ -209,5 +209,8 @@
   "Edit a person": "Editar uma pessoa",
   "People Editing": "Alteração de Cadastro",
   "People Erasing": "Exclusão de Cadastro",
-  "Delete a person": "Apagar o registro de uma pessoa"
+  "Delete a person": "Apagar o registro de uma pessoa",
+  "People Viewing": "Visualização de Pessoa",
+  "a person": "uma pessoa",
+  "Back": "Voltar"
 }

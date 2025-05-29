@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-end">
-                        <a class="bg-blue-600 text-white py-2 px-3 rounded-full" href="{{ route('person.create') }}">{{__('Add Person')}}</a>
+                        <a class="bg-green-600 text-white py-2 px-3 rounded-full hover:bg-green-900" href="{{ route('person.create') }}">{{__('Add Person')}}</a>
                     </div>
 
                     <!-- App\Models\Person::factory()->count(7)->create(); example how to save in database  -->
@@ -42,6 +42,9 @@
                                     <td>{{ $person->email }}</td>
                                     <td>{{ $person->phone }}</td>
                                     <td>
+                                        <a href="{{ route("person.show", $person->id) }}">
+                                            <i class="uil uil-eye w-full text-2xl"></i>
+                                        </a>
                                         <a href="{{ route("person.edit", $person->id) }}">
                                             <i class="uil uil-edit w-full text-2xl"></i>
                                         </a>

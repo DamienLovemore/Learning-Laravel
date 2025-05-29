@@ -23,6 +23,7 @@ Route::controller(PersonController::class)->prefix("person")->name("person")->mi
     Route::get("/", "index")->name(".index");//route: person/index -> name will chain with prefix so name: person.index
     Route::get("/create", "create")->name(".create");
     Route::post("/store", "store")->name(".store");
+    Route::get("{person}/show", "show")->name(".show");
     Route::get("/{person}/edit", "edit")->name(".edit");
     Route::put("/{person}/update", "update")->name(".update");
     Route::get("/{person}/delete", "delete")->name(".delete");

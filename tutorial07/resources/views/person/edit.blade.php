@@ -36,8 +36,8 @@
                         </div>
 
                         <div class="mt-8 flex items-center justify-end gap-x-6">
-                            <a href="{{ route("person.index") }}">{{ __("Cancel") }}</a>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded-full" type="submit">{{ __("Save") }}</button>
+                            <a class="hover:text-black" href="{{ route("person.index") }}">{{ __("Cancel") }}</a>
+                            <button class="bg-yellow-600 text-white px-4 py-2 rounded-full hover:bg-yellow-900" type="submit">{{ __("Save") }}</button>
                         </div>
                     </form>
                 </div>
