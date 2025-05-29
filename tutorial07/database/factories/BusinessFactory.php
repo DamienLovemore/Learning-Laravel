@@ -17,7 +17,9 @@ class BusinessFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "business_name" => fake()->company(),
+            "contact_email" => fake()->unique()->companyEmail(),
+            "phone"         => fake()->phoneNumber()
         ];
     }
 }

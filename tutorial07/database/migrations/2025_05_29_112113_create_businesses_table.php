@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
+            $table->string("business_name");
+            $table->string("contact_email")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
