@@ -212,5 +212,8 @@
   "Delete a person": "Apagar o registro de uma pessoa",
   "People Viewing": "Visualização de Pessoa",
   "a person": "uma pessoa",
-  "Back": "Voltar"
+  "Back": "Voltar",
+  "Business": "Empresa",
+  "a new person": "uma nova pessoa",
+  " (No Business) ": " (Sem empresa) "
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\Business;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = Person::all();
+        //Order alfabética ordenando primeiro pelo primeiro nome, e caso tenha igual, ordena pelo sobrenome
+        $people = Person::orderBy("firstname")->orderBy("lastname")->get();
 
         return view("person.index")->with("people", $people);
         // view("person.index")->with("people", $people) or view("person.index", [$people])
@@ -24,7 +26,9 @@ class PersonController extends Controller
      */
     public function create()
     {
-        return view("person.create");
+        $businesses = Business::select(["id", "business_name"])->orderBy("id")->get();
+
+        return view("person.create")->with("businesses", $businesses);
     }
 
     /**
@@ -33,17 +37,19 @@ class PersonController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "firstname" => "required",
-            "lastname"  => "required",
-            "email"     => "nullable|email",
-            "phone"     => "nullable"
+            "firstname"     => "required",
+            "lastname"      => "required",
+            "email"         => "nullable|email",
+            "phone"         => "nullable",
+            "business_id"   => "nullable|integer|numeric"
         ]);
 
         $person = new Person();
-        $person->firstname = $request->input("firstname");
-        $person->lastname  = $request->input("lastname");
-        $person->email     = $request->input("email");
-        $person->phone     = $request->input("phone");
+        $person->firstname      = $request->input("firstname");
+        $person->lastname       = $request->input("lastname");
+        $person->email          = $request->input("email");
+        $person->phone          = $request->input("phone");
+        $person->business_id    = $request->input("business_id");
         $person->save();
 
         return redirect(route("person.index"));
@@ -62,7 +68,14 @@ class PersonController extends Controller
      */
     public function edit(Person $person)
     {
-        return view("person.edit")->with("person", $person);
+        $businesses = Business::select(["id", "business_name"])->orderBy("id")->get();
+
+        $data = [
+            "person"        => $person,
+            "businesses"    => $businesses
+        ];
+
+        return view("person.edit", $data);
     }
 
     /**
@@ -71,16 +84,18 @@ class PersonController extends Controller
     public function update(Request $request, Person $person)
     {
         $validated = $request->validate([
-            "firstname" => "required",
-            "lastname"  => "required",
-            "email"     => "nullable|email",
-            "phone"     => "nullable"
+            "firstname"     => "required",
+            "lastname"      => "required",
+            "email"         => "nullable|email",
+            "phone"         => "nullable",
+            "business_id"   => "nullable|integer|numeric"
         ]);
 
-        $person->firstname = $request->input("firstname");
-        $person->lastname  = $request->input("lastname");
-        $person->email     = $request->input("email");
-        $person->phone     = $request->input("phone");
+        $person->firstname      = $request->input("firstname");
+        $person->lastname       = $request->input("lastname");
+        $person->email          = $request->input("email");
+        $person->phone          = $request->input("phone");
+        $person->business_id    = $request->input("business_id");
         $person->save();
 
         return redirect(route("person.index"));
@@ -88,11 +103,8 @@ class PersonController extends Controller
 
     public function delete(Person $person)
     {
-        $data = [
-            "person" => $person
-        ];
-
-        return view("person.delete", $data);
+        //Um dado só melhor usar with(flash data to view), vários usa array de dados com índice os nomes desejados
+        return view("person.delete")->with("person", $person);
     }
 
     /**

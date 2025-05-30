@@ -17,7 +17,7 @@ return new class extends Migration
             //Index é para botar filtrar melhor
             //Padrão de nomes: tabela_coluna_index
             $table->index("business_id");
-            $table->foreign("business_id")->references("id")->on("people");
+            $table->foreign("business_id")->references("id")->on("businesses");
         });
     }
 

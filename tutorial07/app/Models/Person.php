@@ -11,5 +11,9 @@ class Person extends Model
     /** @use HasFactory<\Database\Factories\PersonFactory> */
     use HasFactory, SoftDeletes;
 
-    
+    //This person belongs to a business (foregin key business -> One to Many)
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 }

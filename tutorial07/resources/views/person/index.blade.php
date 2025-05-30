@@ -30,6 +30,9 @@
                                     {{__('Phone')}}
                                 </th>
                                 <th>
+                                    {{__('Business')}}
+                                </th>
+                                <th>
                                     {{__('Actions')}}
                                 </th>
                             </tr>
@@ -40,7 +43,9 @@
                                 <tr>
                                     <td>{{ $person->firstname }} {{ $person->lastname }}</td>
                                     <td>{{ $person->email }}</td>
-                                    <td>{{ $person->phone }}</td>
+                                    <td class="text-right">{{ $person->phone }}</td>
+                                    <!-- PHP 8 only runs method if it the precedent is not null ? -->
+                                    <td class="text-center">{{ $person->business?->business_name }}</td>
                                     <td>
                                         <a href="{{ route("person.show", $person->id) }}">
                                             <i class="uil uil-eye w-full text-2xl"></i>
