@@ -15,7 +15,9 @@ class PersonController extends Controller
     public function index()
     {
         //Order alfabética ordenando primeiro pelo primeiro nome, e caso tenha igual, ordena pelo sobrenome
-        $people = Person::orderBy("firstname")->orderBy("lastname")->get();
+        // //Especifica a relação (One to Meny Business->Person) pra carregar as empresas tudo vez, ao invés de várias queries
+        // $people = Person::with("business")->orderBy("firstname")->orderBy("lastname")->paginate(10);
+        $people = Person::orderBy("firstname")->orderBy("lastname")->paginate(10);
 
         return view("person.index")->with("people", $people);
         // view("person.index")->with("people", $people) or view("person.index", [$people])
