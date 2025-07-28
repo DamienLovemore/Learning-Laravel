@@ -26,5 +26,8 @@ Route::get("/jobs/{p1}", function($p1){
 })->name("job-info");
 
 Route::get("/contact", function(){
-    return view("contact");
+    $greeting   = __("Hello!");
+    $data       = compact("greeting");
+
+    return view("contact", $data);
 })->name("contact");

@@ -3,5 +3,5 @@
         {{ __("Contact Page") }}
     @endslot
 
-    <h1>{{ __("Hello!") }} {{ __("Contact Page") }}.</h1>
+    <h1>{{ $greeting }} {{ __("Contact Page") }}.</h1>
 </x-layout>

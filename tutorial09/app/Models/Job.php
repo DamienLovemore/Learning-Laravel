@@ -2,54 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
 * Classe que representa a lista de empregos
 */
-class Job
+class Job extends Model
 {
-    /**
-    * Retorna a lista de todos os empregos
-    * @return array[]
-    */
-    public static function all(): array
-    {
-        $retorno = [
-            [
-                "id"        => 220930,
-                "title"     => __("Director"),
-                "salary"    => 50000.00
-            ],
-            [
-                "id"        => 744254,
-                "title"     => __("Programmer"),
-                "salary"    => 10230.86
-            ],
-            [
-                "id"        => 391579,
-                "title"     => __("Teacher"),
-                "salary"    => 3542.23
-            ]
-        ];
+    use HasFactory;
 
-        return $retorno;
-    }
+    protected $table = "job_listings";//Changes the default table(From default convention it would have searched the jobs table, which already comes with Laravel)
 
-    /**
-     * Retorna um emprego específico da lista de empregos com base no id
-     * @param int $id ID do emprego a ser procurado
-     * @return array Um vetor com as informações do emprego atual
-     */
-    public static function find(int $id): array
-    {
-        $retorno = Arr::first(static::all(), fn($job) => $job["id"] == $id);
-
-        //Caso não consiga encontrar estoura o erro na tela de não encontrado(404, erro visível)
-        if(empty($retorno))
-            abort(404, __("Not Found"));
-
-        return $retorno;
-    }
+    protected $fillable = ["title", "salary"];
 }
-?>
