@@ -15,4 +15,14 @@ class Job extends Model
     protected $table = "job_listings";//Changes the default table(From default convention it would have searched the jobs table, which already comes with Laravel)
 
     protected $fillable = ["title", "salary"];
+
+    public function employer()
+    {
+        return $this->belongsTo(Employer::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
