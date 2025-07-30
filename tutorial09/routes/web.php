@@ -11,7 +11,9 @@ Route::get('/', function () {
 })->name("home");
 
 Route::get("/jobs", function(){
-    $jobs       = Job::all();
+    //https://laravelmagazine.com/differences-between-lazy-loading-and-eager-loading
+    $jobs       = Job::with("employer")//Eager Loading with Relationships(Queries count reduced from 22 to 3;Solves N+1 problem)
+                    ->paginate(20);//Switch to simplePaginate to display numbers of pags, just previous and next buttons. Or cursor paginate to be even more performant(no page in the url)
     $data       = compact("jobs");
 
     return view("jobs", $data);
