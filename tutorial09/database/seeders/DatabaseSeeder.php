@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        //Now we can run all the seeders with php artisan migrate:fresh --seed or,
+        //run them individually with php artisan db:seed --class=JobSeeder for example.
+        $this->call(UserSeeder::class);
+        $this->call(JobSeeder::class);
     }
 }
