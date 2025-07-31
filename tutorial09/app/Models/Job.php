@@ -14,7 +14,7 @@ class Job extends Model
 
     protected $table = "job_listings";//Changes the default table(From default convention it would have searched the jobs table, which already comes with Laravel)
 
-    protected $fillable = ["title", "salary"];
+    protected $fillable = ["title", "salary", "employer_id"];
 
     public function employer()
     {

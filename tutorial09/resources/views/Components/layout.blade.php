@@ -4,12 +4,32 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ $heading }}</title>
+        <!-- Tailwind Framework -->
         <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Font-Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/js/all.js" integrity="sha512-txwxTmf1qsISfr3XOw6e84Mkz3UdsQDAsfY65eb6YWNj1rMqtCQsCCfCuvo6Zzp+z5l2RQDpEtEYSC3/NycAJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
 
     <body class="h-full">
         @php
-            $path = Request::path();//request()->is('/') //home for example, would also do the same
+            //Lista de urls que devem voltar para traz(mais de um nível)
+            $back_list    = [];
+            $back_list[]  = (bool) preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', request()->segment(2, "#$!"));//jobs/base64 = página de segundo nível de informação
+            $url_back     = false;
+            //Habilita o botão de voltar, para ele poder aparecer
+            if(in_array(true, $back_list, true))
+                $url_back = true;
+            //Verifica se é a página inicial de emprego pra montar o botão para a página de criar emprego
+            $jobs_current = request()->is('jobs');
+            $link_name    = "";
+            $url          = "";
+            if($jobs_current)
+            {
+                $link_name = __("Create Job");
+                $url       = route("jobs.create");
+            }
         @endphp
 
         <div class="min-h-full">
@@ -121,8 +141,15 @@
             </nav>
 
             <header class="bg-white shadow-sm">
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:flex {{ empty($url_back) ? 'sm:justify-between' : '' }}">
+                    @if($url_back)
+                        <x-back-button />
+                    @endif
                     <h1 class="text-3xl font-bold tracking-tight text-indigo-900">{{ $heading }}</h1>
+
+                    @if (!empty($url) && !empty($link_name))
+                        <x-button href="{{ $url }}">{{ $link_name }}</x-button>
+                    @endif
                 </div>
             </header>
             <main>
