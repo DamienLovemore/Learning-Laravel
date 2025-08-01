@@ -14,13 +14,6 @@
 
     <body class="h-full">
         @php
-            //Lista de urls que devem voltar para traz(mais de um nível)
-            $back_list    = [];
-            $back_list[]  = (bool) preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', request()->segment(2, "#$!"));//jobs/base64 = página de segundo nível de informação
-            $url_back     = false;
-            //Habilita o botão de voltar, para ele poder aparecer
-            if(in_array(true, $back_list, true))
-                $url_back = true;
             //Verifica se é a página inicial de emprego pra montar o botão para a página de criar emprego
             $jobs_current = request()->is('jobs');
             $link_name    = "";
@@ -141,9 +134,9 @@
             </nav>
 
             <header class="bg-white shadow-sm">
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:flex {{ empty($url_back) ? 'sm:justify-between' : '' }}">
-                    @if($url_back)
-                        <x-back-button />
+                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 sm:flex {{ empty($back_button) ? 'sm:justify-between' : '' }}">
+                    @if (!empty($back_button))
+                        {{ $back_button }}
                     @endif
                     <h1 class="text-3xl font-bold tracking-tight text-indigo-900">{{ $heading }}</h1>
 
