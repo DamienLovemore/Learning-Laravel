@@ -11,7 +11,7 @@
             $id_crip     = base64_encode($job["id"]);
         @endphp
         <x-button class="grow" href="{{ route('jobs.edit', $id_crip) }}">{{ __("Edit") }}</x-button>
-        <x-button class="grow" :type="'button'" :target="'delete-form'">{{ __("Delete") }}</x-button>
+        <x-button class="grow" href="{{ route('jobs.delete', $id_crip) }}" :type="'button'" :target="'delete-form'">{{ __("Delete") }}</x-button>
     </div>
 
     <div class="clear-right">
