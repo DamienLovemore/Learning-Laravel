@@ -51,6 +51,11 @@
                                     <x-nav-link href="{{ route('user.register') }}" :active="request()->is('user/enter')">{{ __("Register") }}</x-nav-link>
                                 @endguest
                                 @auth
+                                    @php
+                                        $user = auth()->user();
+                                        $user_fullname = $user->first_name . " " . $user->last_name;
+                                    @endphp
+                                    <p class="text-pink-400 rounded-md px-3 py-2 text-base font-bold hover:cursor-default select-none">{{ $user_fullname }}</p>
                                     <!-- Profile dropdown -->
                                     <div class="relative ml-3">
                                         <div>
@@ -64,6 +69,14 @@
                                                     alt="" />
                                             </button>
                                         </div>
+                                    </div>
+
+                                    <div class="relative ml-4">
+                                        <form action="{{ route('user.logout') }}" method="POST">
+                                            @csrf
+
+                                            <x-nav-link type="button"><i class="fa-solid fa-right-from-bracket text-pink-400 text-base font-bold mr-1"></i>{{ __("Log Out") }}</x-nav-link>
+                                        </form>
                                     </div>
                                 @endauth
                             </div>

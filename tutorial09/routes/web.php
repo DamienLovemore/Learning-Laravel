@@ -52,6 +52,7 @@ Route::group(["prefix" => "user", "as" => "user"], function(){
     Route::controller(SessionController::class)->group(function(){
         Route::get("/login", "index")->name(".index");
         Route::post("/enter", "enter")->name(".login");
+        Route::post("/logout", "logout")->name(".logout");
     });
 });
 
