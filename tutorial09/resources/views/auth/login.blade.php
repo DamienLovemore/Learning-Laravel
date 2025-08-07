@@ -1,30 +1,27 @@
 <x-layout>
     @slot("heading")
-        {{ __("Create Job Page") }}
+        {{ __("Login") }}
     @endslot
 
-    <form action="{{ route('jobs.store') }}" method="POST">
+    <form action="{{ route('user.login') }}" method="POST">
         @csrf
 
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base/7 font-semibold text-gray-900">{{ __("Create a New Job") }}</h2>
-                <p class="mt-1 text-sm/6 text-gray-600">{{ __("We just need a handful of details from you") }}.</p>
-
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <x-form-field :columns="4">
-                        <x-form-label for="title">Title</x-form-label>
+                        <x-form-label for="email">Email</x-form-label>
                         <div class="mt-2">
-                            <x-form-input :target="'title'" :placeholder="'Information Systems Manager'" />
+                            <x-form-input :target="'email'" :type="'email'"/>
                             {{-- <x-form-error :target="'title'" /> --}}
                         </div>
                     </x-form-field>
 
                     <x-form-field :columns="4">
-                        <x-form-label for="salary">Salary</x-form-label>
+                        <x-form-label for="password">Password</x-form-label>
                         <div class="mt-2">
-                            <x-form-input :target="'salary'" :placeholder="'1518,00'" :type="'number'"/>
-                            {{-- <x-form-error :target="'salary'" /> --}}
+                            <x-form-input :target="'password'" :type="'password'"/>
+                            {{-- <x-form-error :target="'title'" /> --}}
                         </div>
                     </x-form-field>
                 </div>
@@ -35,7 +32,7 @@
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
             <x-form-cancel-button>Cancel</x-form-cancel-button>
-            <x-form-button>Save</x-form-button>
+            <x-form-button>Enter</x-form-button>
         </div>
     </form>
 </x-layout>

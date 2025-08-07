@@ -1,6 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\SessionController;
 
 //php artisan route:list -Shows all routes
 //php artisan route:list --except-vendor -Shows only your created routes
@@ -39,3 +41,17 @@ Route::get("/contact", function(){
 
     return view("contact", $data);
 })->name("contact");
+
+// Auth
+Route::group(["prefix" => "user", "as" => "user"], function(){
+    Route::controller(RegisteredUserController::class)->group(function(){
+        Route::get("/register", "create")->name(".register");
+        Route::put("/register", "store")->name(".store");
+    });
+
+    Route::controller(SessionController::class)->group(function(){
+        Route::get("/login", "index")->name(".index");
+        Route::post("/enter", "enter")->name(".login");
+    });
+});
+
