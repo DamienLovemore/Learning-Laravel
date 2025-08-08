@@ -19,18 +19,18 @@ Route::group(["prefix" => "jobs", "as" => "jobs"], function(){//Group them toget
     Route::controller(JobController::class)->group(function(){//Set all to use the same controller
         Route::get("/", "index");
 
-        Route::get("/create", "create")->name(".create");
+        Route::get("/create", "create")->middleware("auth")->name(".create");
 
-        Route::post("/", "store")->name(".store");
+        Route::post("/", "store")->middleware("auth")->name(".store");
 
         //Wildcards should generally stick to the bottom
         Route::get("/{p1}", "show")->name(".info");
 
-        Route::get("/{p1}/edit", "edit")->name(".edit");
+        Route::get("/{p1}/edit", "edit")->middleware("auth")->can("job-control", "p1")->name(".edit");
 
-        Route::patch("/{p1}/update", "update")->name(".update");
+        Route::patch("/{p1}/update", "update")->middleware("auth")->can("edit", "p1")->name(".update");//Policies, JobPolicy
 
-        Route::delete("/{p1}/delete", "delete")->name(".delete");
+        Route::delete("/{p1}/delete", "delete")->middleware("auth")->can("job-control", "p1")->name(".delete");
     });
 });
 
@@ -41,6 +41,11 @@ Route::get("/contact", function(){
 
     return view("contact", $data);
 })->name("contact");
+
+//Middleware auth, expects a route named exactly "login"
+Route::get("/login", function(){
+    return redirect(route("user.index"));
+})->name("login");
 
 // Auth
 Route::group(["prefix" => "user", "as" => "user"], function(){

@@ -10,8 +10,10 @@
         @php
             $id_crip     = base64_encode($job["id"]);
         @endphp
-        <x-button class="grow" href="{{ route('jobs.edit', $id_crip) }}">{{ __("Edit") }}</x-button>
-        <x-button class="grow" href="{{ route('jobs.delete', $id_crip) }}" :type="'button'" :target="'delete-form'">{{ __("Delete") }}</x-button>
+        @can("job-control", $id_crip)
+            <x-button class="grow" href="{{ route('jobs.edit', $id_crip) }}">{{ __("Edit") }}</x-button>
+            <x-button class="grow" href="{{ route('jobs.delete', $id_crip) }}" :type="'button'" :target="'delete-form'">{{ __("Delete") }}</x-button>
+        @endcan
     </div>
 
     <div class="clear-right">
@@ -21,8 +23,10 @@
         </p>
     </div>
 
-    <form class="hidden" id="delete-form" action="{{ route('jobs.delete', $id_crip) }}" method="POST">
-        @csrf
-        @method("DELETE")
-    </form>
+    @can("job-control", $id_crip)
+        <form class="hidden" id="delete-form" action="{{ route('jobs.delete', $id_crip) }}" method="POST">
+            @csrf
+            @method("DELETE")
+        </form>
+    @endcan
 </x-layout>

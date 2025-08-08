@@ -6,6 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
+//These types of stuff that must exist across all application must be put in the boot method in AppServiceProvider.php
+
+// Gate::define("logged-in", function(){
+//     return Auth::check();
+// });
+
+// Gate::define("job-control", function(User $user, Job $job){
+//     return $job->employer->user->is($user);
+// });
 
 class JobController extends Controller
 {
@@ -23,6 +35,10 @@ class JobController extends Controller
 
     public function create()
     {
+        //Auth::guest for a not logged in user, Auth::check for a logged one.
+        // if(Gate::denies("logged-in"))
+        //     return redirect(route("user.index"));
+
         return view("jobs.create");
     }
 
@@ -70,6 +86,17 @@ class JobController extends Controller
 
         $data   = compact("job");
 
+        // if(Auth::guest())//If not logged in redirect to login page
+        //     return redirect(route("user.index"));
+        // else if($job->employer->user->isNot(Auth::user()))//If logged in but not the user that created the jobs then does not allow
+        //     abort(403);
+
+        // if(Gate::denies("logged-in"))//denies verify negative of the gate condition, allows verifies as normal
+        //     return redirect(route("user.index"));
+
+        //If not authorized runs a 403 error
+        // Gate::authorize("job-control", $p1);
+
         return view("jobs.edit", $data);
     }
 
@@ -77,6 +104,9 @@ class JobController extends Controller
     {
         $id     = (int)base64_decode($p1);
         $job    = Job::findOrFail($id);
+
+        //If not authorized runs a 403 error
+        // Gate::authorize("job-control", $p1);
 
         $request->validate([
             "title"  => "required|regex:/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ0-9\h]+$/|min:6|max:50",//\h espaços, a-z letra minúsculas, á... acentos, 0-9 números
@@ -106,6 +136,9 @@ class JobController extends Controller
     {
         $id     = (int)base64_decode($p1);
         $job    = Job::findOrFail($id);
+
+        //If not authorized runs a 403 error
+        // Gate::authorize("job-control", $p1);
 
         $job->delete();
 

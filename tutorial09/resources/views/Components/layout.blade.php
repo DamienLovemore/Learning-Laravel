@@ -18,7 +18,7 @@
             $jobs_current = request()->is('jobs');
             $link_name    = "";
             $url          = "";
-            if($jobs_current)
+            if($jobs_current && Auth::check())//Auth::check verifies if user is logged in
             {
                 $link_name = __("Create Job");
                 $url       = route("jobs.create");

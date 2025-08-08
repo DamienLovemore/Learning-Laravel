@@ -27,7 +27,7 @@ class SessionController extends Controller
         //Verifies if the input received is valid or not
         $validated = $request->validate([
             "email"      => "required|email:rfc,dns,spoof",
-            "password"   => ["required", "min:5", "max:25", $pass_rules, "confirmed"]
+            "password"   => ["required", "min:5", "max:25", $pass_rules]
         ]);
 
         //Try to login in with the given credentials

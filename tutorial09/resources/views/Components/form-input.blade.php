@@ -35,7 +35,7 @@
     @elseif ($type === "password")
         <input id="{{ $target }}" type="password" name="{{ $target }}" placeholder="{{ __($placeholder) }}"
         class="{{$input_class }}"
-        value="{{ request()->old($target) }}" {{ ($required) ? "required" : ""}}
+        {{ ($required) ? "required" : ""}}
         minlength="5" maxlength="25"
         />
     @endif
