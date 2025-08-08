@@ -8,6 +8,8 @@ use App\Models\Job;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Mail\JobPosted;
+use Illuminate\Support\Facades\Mail;
 
 //These types of stuff that must exist across all application must be put in the boot method in AppServiceProvider.php
 
@@ -60,11 +62,20 @@ class JobController extends Controller
             throw ValidationException::withMessages($sal_range);
         }
 
-        Job::create([
+        $job = Job::create([
             "title"         => $request->input("title"),
             "salary"        => $val_sal,
             "employer_id"   => 1,
         ]);
+
+        $target_email    = "matheusoaresmartins2020@gmail.com";
+        $job_email       = new JobPosted($job);
+
+        Mail::to($target_email, "Tutorial 09")
+            ->send($job_email);
+
+        // Mail::to($job->employer->user, "Tutorial 09")
+        //     ->send($job_email); //Laravel gets the email by default
 
         return redirect(route("jobs"));//Redirect to the page that shows all jobs
     }

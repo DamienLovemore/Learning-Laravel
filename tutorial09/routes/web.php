@@ -1,11 +1,23 @@
 <?php
+use App\Mail\JobPosted;
+use App\Models\Job;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-
 //php artisan route:list -Shows all routes
 //php artisan route:list --except-vendor -Shows only your created routes
+
+Route::get("test", function(){
+    $target_email    = "matheusoaresmartins2020@gmail.com";
+    $job_email       = new JobPosted(Job::first());
+
+    Mail::to($target_email, "Tutorial 09")
+        ->send($job_email);
+
+    return __("Done");
+});
 
 Route::get('/', function () {
     $greeting   = __("Hello!");
