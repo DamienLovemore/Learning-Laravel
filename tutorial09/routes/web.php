@@ -11,6 +11,8 @@ use App\Jobs\TranslateJob;
 //php artisan route:list -Shows all routes
 //php artisan route:list --except-vendor -Shows only your created routes
 
+Route::view("test-themecolors", "test.themecolors");
+
 Route::get("test-queue", function(){
     //dispatch sends a job to the queue
     dispatch(function(){

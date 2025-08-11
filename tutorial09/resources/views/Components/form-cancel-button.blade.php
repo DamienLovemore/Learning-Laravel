@@ -1,6 +1,6 @@
 @php
     $custom_attr = [
-        "class" => "text-sm/6 font-semibold text-gray-900"
+        "class" => "text-sm/6 font-semibold text-gray-900 cursor-pointer p-1.5 hover:border-2 rounded-xl"
     ];
     $attr        = $attributes->merge($custom_attr);//Get the attributes, and add our custom classes to the class attribute
 

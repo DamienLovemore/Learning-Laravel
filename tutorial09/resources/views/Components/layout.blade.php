@@ -5,11 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ $heading }}</title>
         <!-- Tailwind Framework -->
-        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+        @vite("resources/css/app.css")
 
         <!-- Font-Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/js/all.js" integrity="sha512-txwxTmf1qsISfr3XOw6e84Mkz3UdsQDAsfY65eb6YWNj1rMqtCQsCCfCuvo6Zzp+z5l2RQDpEtEYSC3/NycAJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        @vite("resources/js/app.js")
     </head>
 
     <body class="h-full">
