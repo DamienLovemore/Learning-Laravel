@@ -6,14 +6,33 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Jobs\TranslateJob;
+
 //php artisan route:list -Shows all routes
 //php artisan route:list --except-vendor -Shows only your created routes
 
-Route::get("test", function(){
+Route::get("test-queue", function(){
+    //dispatch sends a job to the queue
+    dispatch(function(){
+        $msg = __("Hello from the queue") . "!";
+        logger($msg);//logger display a message to the log
+    });
+
+    dispatch(function(){
+        $msg = __("This message was delayed") . ".";
+        logger($msg);//logger display a message to the log
+    })->delay(5);
+
+    //You can create specific jobs to have them sent at a given time
+    $job = Job::first();
+    TranslateJob::dispatch($job);
+});
+
+Route::get("test-mail", function(){
     $target_email    = "matheusoaresmartins2020@gmail.com";
     $job_email       = new JobPosted(Job::first());
 
-    Mail::to($target_email, "Tutorial 09")
+    Mail::to($target_email, "Matheus")
         ->send($job_email);
 
     return __("Done");

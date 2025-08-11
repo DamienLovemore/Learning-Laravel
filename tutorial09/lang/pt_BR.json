@@ -245,5 +245,7 @@
   "Done": "Feito",
   "Job Posted": "Postagem de emprego",
   "Automated": "Automatizado",
-  "View your job listing": "Veja a sua postagem de emprego"
+  "View your job listing": "Veja a sua postagem de emprego",
+  "Hello from the queue": "Olá, aqui é a fila",
+  "This message was delayed": "Essa mensagem foi adiada"
 }

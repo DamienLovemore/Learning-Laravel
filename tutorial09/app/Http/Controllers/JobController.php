@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Mail;
 
@@ -71,8 +69,12 @@ class JobController extends Controller
         $target_email    = "matheusoaresmartins2020@gmail.com";
         $job_email       = new JobPosted($job);
 
-        Mail::to($target_email, "Tutorial 09")
-            ->send($job_email);
+        // Mail::to($target_email, "Tutorial 09")
+        //     ->send($job_email);
+        //php artisan queue:work - To listend and handle to queue jobs in the background
+        Mail::to($target_email, "User")->queue(
+            $job_email
+        );
 
         // Mail::to($job->employer->user, "Tutorial 09")
         //     ->send($job_email); //Laravel gets the email by default
