@@ -12,9 +12,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/js/all.js" integrity="sha512-txwxTmf1qsISfr3XOw6e84Mkz3UdsQDAsfY65eb6YWNj1rMqtCQsCCfCuvo6Zzp+z5l2RQDpEtEYSC3/NycAJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Custom Fonts -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@400;500;600&display=swap" rel="stylesheet">
+
     @vite("resources/js/app.js")
 </head>
-<body class="bg-black text-white">
+<body class="bg-black text-white font-hanken-grotesk">
     @php
         $logo = Vite::asset("resources/images/logo.svg")//For versioning, hash, and cache
     @endphp
@@ -38,7 +44,7 @@
             </div>
         </nav>
 
-        <main class="mt-10 max-w-[76.7%]">
+        <main class="mt-10 max-w-[76.7%] mx-auto">
             {{ $slot }}
         </main>
     </div>
