@@ -20,7 +20,7 @@
 
     @vite("resources/js/app.js")
 </head>
-<body class="bg-black text-white font-hanken-grotesk">
+<body class="bg-black text-white font-hanken-grotesk pb-20">
     @php
         $logo = Vite::asset("resources/images/logo.svg")//For versioning, hash, and cache
     @endphp

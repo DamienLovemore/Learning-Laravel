@@ -12,8 +12,8 @@
 */
 
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature');
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)//Starts the database and Laravel, and resets the database state to be clean
+    ->in('Feature', "Unit");
 
 /*
 |--------------------------------------------------------------------------
