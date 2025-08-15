@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rules\File;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
 {
@@ -38,14 +40,26 @@ class RegisteredUserController extends Controller
         ]);
 
         //Employer specific validations
-        //Image rules, it needs to be a jpg, jpeg or png. And the dimension need to a maximum of 600 width and 400 height.
-        $img = File::types(["jpg", "jpeg", "png"])
-                    ->dimensions(Rule::dimensions()->maxWidth(600)->maxHeight(400));
         $employer_attr = $request->validate([
-            "name" => ["required", "min:6", "max:60", "regex:/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ0-9\h]+$/"],//Letters and accents(lower and upper case), numbers and space.
-            "logo" => ["required", $img, "image"]
+            "employer"      => ["required", "min:6", "max:60", "regex:/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ0-9\h]+$/"],//Letters and accents(lower and upper case), numbers and space.
+            "logo"          => ["required", File::types(["png", "jpg", "webp"]), "dimensions:min_width=300,min_height=300,max_width=1000,max_height=1000"]
         ]);
 
         $user = User::create($user_attr);
+
+        //Store the uploadede file into a folder called logos
+        $logo_path = $request->logo->store("logos");
+
+        //Register the employer for this user
+        $user->employer()->create([
+            "name"      => $employer_attr["employer"],
+            "logo"      => $logo_path
+        ]);
+
+        //Log in the user
+        Auth::login($user);
+
+        //Redirect to the home page
+        return redirect(route("home"));
     }
 }

@@ -39,9 +39,25 @@
                 <a href="#">Companies</a>
             </div>
 
-            <div>
-                <a href="#">Post a Job</a>
-            </div>
+            @auth
+                <div class="space-x-6 font-bold flex">
+                    <a href="{{ route('jobs.create') }}">Post a Job</a>
+
+                    <form action="{{route('session.destroy')}}" method="post">
+                        @csrf
+                        @method("DELETE")
+
+                        <button class="cursor-pointer">Log Out</button>
+                    </form>
+                </div>
+            @endauth
+
+            @guest
+                <div class="space-x-6 font-bold">
+                    <a href="{{ route("user_reg.create") }}">Sign Up</a>
+                    <a href="{{ route('session.create') }}">Log In</a>
+                </div>
+            @endguest
         </nav>
 
         <main class="mt-10 max-w-[76.7%] mx-auto">
