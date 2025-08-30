@@ -1,8 +1,7 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Models\Ticket;
+use App\Http\Controllers\Api\AuthController;
 
 // php artisan install:api to enable API in the Laravel project (There should be a api.php file in routes)
 // url begins with api/
@@ -17,10 +16,6 @@ Route::get("/", function(){
 Route::get("/loginmessage", [AuthController::class, "login_message"]);
 Route::post("/login", [AuthController::class, "login"]);
 Route::post("/register", [AuthController::class, "register"]);
-
-Route::get("/tickets", function(){
-    return Ticket::all();
-});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
