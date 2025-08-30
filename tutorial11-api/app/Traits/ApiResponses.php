@@ -9,7 +9,7 @@ trait ApiResponses{
      * @param mixed $message The message that will be returned in the JSON response
      * @return JsonResponse
      */
-    protected function ok($message, $data): JsonResponse
+    protected function ok($message, $data = []): JsonResponse
     {
         return $this->success($message, $data);
     }
