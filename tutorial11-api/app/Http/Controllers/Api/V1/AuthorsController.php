@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
 use App\Http\Resources\V1\UserResource;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Requests\Api\V1\UpdateUserRequest;
 
-class UsersController extends ApiController
+class AuthorsController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -38,16 +37,16 @@ class UsersController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $author)
     {
         if($this->include("tickets"))
         {
-            $user_tick  = $user->load("tickets");
+            $user_tick  = $author->load("tickets");
             $data       = new UserResource($user_tick);
             return $data;
         }
 
-        $data = new UserResource($user);
+        $data = new UserResource($author);
 
         return $data;
     }

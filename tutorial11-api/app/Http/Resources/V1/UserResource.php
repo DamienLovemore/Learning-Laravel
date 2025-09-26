@@ -21,7 +21,7 @@ class UserResource extends JsonResource
                 "name"              => $this->name,
                 "email"             => $this->email,
                 //Multiples values returned with a single condition
-                $this->mergeWhen($request->routeIs("users.*"), [
+                $this->mergeWhen($request->routeIs("authors.*"), [
                     "emailVerifiedAt" => $this->email_verified_at,
                     "createdAt" => $this->created_at,
                     "updatedAt" => $this->updated_at
@@ -29,7 +29,7 @@ class UserResource extends JsonResource
             ],
             "includes" => TicketResource::collection($this->whenLoaded("tickets")),//Only appear in here if the query param tickets is passed
             "links"         => [
-                "self" => route("users.show", ["user" => $this->id])
+                "self" => route("authors.show", ["author" => $this->id])
             ]
         ];
 
