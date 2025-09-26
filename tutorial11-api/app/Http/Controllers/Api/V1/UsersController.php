@@ -8,13 +8,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreUserRequest;
 use App\Http\Requests\Api\V1\UpdateUserRequest;
 
-class UsersController extends Controller
+class UsersController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        if($this->include("tickets"))
+        {
+            $user_tick  = User::with("tickets")->paginate();
+            $data       = UserResource::collection($user_tick);
+            return $data;
+        }
+
         $data = UserResource::collection(User::paginate());
 
         return $data;
@@ -33,6 +40,13 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        if($this->include("tickets"))
+        {
+            $user_tick  = $user->load("tickets");
+            $data       = new UserResource($user_tick);
+            return $data;
+        }
+
         $data = new UserResource($user);
 
         return $data;
