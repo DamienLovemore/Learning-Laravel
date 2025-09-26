@@ -18,10 +18,11 @@ class DatabaseSeeder extends Seeder
 
         $users = User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'Matheus Soares Martins',
+            'email' => 'matheusoaresmartins2020@gmail.com',
+            'password' => Hash::make("abcdef21")
+        ]);
 
         Ticket::factory(100)
             ->recycle($users)//Recycle assigns randomly from the variable

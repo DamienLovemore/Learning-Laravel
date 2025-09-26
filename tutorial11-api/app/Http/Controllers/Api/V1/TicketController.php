@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Ticket;
+use App\Http\Resources\V1\TicketResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
@@ -14,7 +15,10 @@ class TicketController extends Controller
      */
     public function index()
     {
-        return Ticket::all();
+        //Transform models into an output of JSON that follows the rules convention at JSONAPI.org
+        $data = TicketResource::collection(Ticket::paginate());
+
+        return $data;
     }
 
     /**
@@ -30,9 +34,10 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
-    }
+        $ticket_json = new TicketResource($ticket);
 
+        return $ticket_json;
+    }
 
     /**
      * Update the specified resource in storage.
