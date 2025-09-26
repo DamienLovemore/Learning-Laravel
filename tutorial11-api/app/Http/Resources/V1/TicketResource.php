@@ -42,7 +42,7 @@ class TicketResource extends JsonResource
                     ]
                 ]
             ],
-            "includes" => new UserResource($this->whenLoaded("user")),//Only appear in here if the query param author is passed
+            "includes" => new UserResource($this->whenLoaded("author")),//Only appear in here if the query param author is passed
             "links"         => [
                 "self" => route("tickets.show", ["ticket" => $this->id])
             ]
