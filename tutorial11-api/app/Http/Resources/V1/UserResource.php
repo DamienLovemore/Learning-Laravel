@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Resources\V1;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class UserResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        $data = [
+            "type"          => "user",
+            "id"            => $this->id,
+            "attributes"    => [
+                "name"              => $this->name,
+                "email"             => $this->email,
+                //Multiples values returned with a single condition
+                $this->mergeWhen($request->routeIs("users.*"), [
+                    "emailVerifiedAt" => $this->email_verified_at,
+                    "createdAt" => $this->created_at,
+                    "updatedAt" => $this->updated_at
+                ]),
+            ]
+        ];
+
+        return $data;
+    }
+}
