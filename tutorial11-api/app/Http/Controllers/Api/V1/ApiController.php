@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Traits\ApiResponses;
 
 class ApiController extends Controller
 {
+    use ApiResponses;
+
     //Verifies if the query string "include" have that specific relationship
     public function include(string $relationship): bool
     {
