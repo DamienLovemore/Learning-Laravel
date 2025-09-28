@@ -9,8 +9,10 @@ Route::middleware("auth:sanctum")->group(function(){
     //Requires user to be logged in with a Bearer token in the Authentication
     Route::apiResource("tickets", TicketController::class)->except(["update"]);
     Route::put("tickets/{ticket}", [TicketController::class, "replace"]);
+    Route::patch("tickets/{ticket}", [TicketController::class, "update"]);
 
     Route::apiResource("authors", AuthorsController::class);
+
     Route::apiResource("authors.tickets", AuthorTicketsController::class)->except(["update"]);
     Route::put("authors/{author}/tickets/{ticket}", [AuthorTicketsController::class, "replace"]);
-});
+    Route::patch("authors/{author}/tickets/{ticket}", [AuthorTicketsController::class, "update"]);});
