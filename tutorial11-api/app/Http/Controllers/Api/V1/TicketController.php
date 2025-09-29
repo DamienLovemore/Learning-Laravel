@@ -9,10 +9,14 @@ use App\Http\Requests\Api\V1\StoreTicketRequest;
 use App\Http\Requests\Api\V1\UpdateTicketRequest;
 use App\Http\Requests\Api\V1\ReplaceTicketRequest;
 use App\Http\Filters\V1\TicketFilter;
+use App\Policies\V1\TicketPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TicketController extends ApiController
 {
+    protected $policy_class = TicketPolicy::class;
+
     /**
      * Display a listing of the resource.
      */
@@ -89,6 +93,9 @@ class TicketController extends ApiController
         {
             $ticket         = Ticket::findOrFail($ticket_id);
 
+            //Policy to check if it has the permissions
+            $this->isAble("update", $ticket);
+
             $model          = $request->mappedAttributes();
 
             $ticket->update($model);
@@ -99,6 +106,10 @@ class TicketController extends ApiController
         catch(ModelNotFoundException $userNotFound)
         {
             return $this->error("The ticket cannot be found!", 404);
+        }
+        catch(AuthorizationException $notAuthorized)
+        {
+            return $this->error("You do not have permission to do this!", 404);
         }
     }
 

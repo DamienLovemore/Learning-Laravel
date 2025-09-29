@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\Ticket;
+use App\Policies\V1\TicketPolicy;
+//Remove the default ServiceProvider to implement the Authorization provider
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $policies = [
+        Ticket::class => TicketPolicy::class
+    ];
+
     /**
      * Register any application services.
      */
@@ -19,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        //Enable the policies
+        $this->registerPolicies();
     }
 }
